@@ -10,11 +10,11 @@ def create_app(repositories):
 
     @app.route("/", methods=["GET"])
     def hello_world():
-        return "...magic!"
+        return "Esta es la API de Entrenched"
 
-    @app.route("/api/info", methods=["GET"])
-    def info_get():
-        info = repositories["info"].get_info()
-        return object_to_json(info)
+    @app.route("/api/game", methods=["GET"])
+    def get_game_state():
+        game_state = repositories["squares"].get_squares()
+        return object_to_json(game_state)
 
     return app
