@@ -40,7 +40,7 @@ export default {
       if (this.movement.from !=="" && this.movement.to !==""){
         this.sendMovement()
         this.movement = {from:"", to:""}
-        await this.delay(1000);
+        await this.delay(250);
         this.loadData()
 
       }
