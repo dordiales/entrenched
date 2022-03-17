@@ -1,6 +1,6 @@
 import sqlite3
 from src.webserver import create_app
-from domain.squares import SquaresRepository
+from src.domain.squares import SquaresRepository
 
 
 database_path = "data/database.db"

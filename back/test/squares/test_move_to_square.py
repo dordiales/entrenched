@@ -4,17 +4,22 @@ from src.webserver import create_app
 from src.domain.squares import SquaresRepository
 
 
-def test_should_return_state_of_the_game():
+def test_should_move_soldier_from_a_square_to_another():
     squares_repository = SquaresRepository(temp_file())
     app = create_app(repositories={"squares": squares_repository})
     client = app.test_client()
 
     squares_repository.test_start()
 
+    movement = {"from": "A1", "to": "B1"}
+
+    put_response = client.put("api/game", json=movement)
+    assert put_response.status_code == 200
+
     response = client.get("/api/game")
 
     assert response.json == [
-        {"square": "A1", "soldier": "rifleman", "player": "player_1"},
+        {"square": "A1", "soldier": None, "player": None},
         {"square": "A2", "soldier": "rifleman", "player": "player_1"},
         {"square": "A3", "soldier": None, "player": None},
         {"square": "A4", "soldier": "rifleman", "player": "player_1"},
@@ -23,7 +28,7 @@ def test_should_return_state_of_the_game():
         {"square": "A7", "soldier": "rifleman", "player": "player_1"},
         {"square": "A8", "soldier": None, "player": None},
         {"square": "A9", "soldier": None, "player": None},
-        {"square": "B1", "soldier": None, "player": None},
+        {"square": "B1", "soldier": "rifleman", "player": "player_1"},
         {"square": "B2", "soldier": None, "player": None},
         {"square": "B3", "soldier": None, "player": None},
         {"square": "B4", "soldier": None, "player": None},
@@ -60,3 +65,16 @@ def test_should_return_state_of_the_game():
         {"square": "E8", "soldier": None, "player": None},
         {"square": "E9", "soldier": None, "player": None},
     ]
+
+
+def test_should_move_only_to_adjacent_squares():
+    squares_repository = SquaresRepository(temp_file())
+    app = create_app(repositories={"squares": squares_repository})
+    client = app.test_client()
+
+    squares_repository.test_start()
+
+    movement = {"from": "A1", "to": "B2"}
+
+    put_response = client.put("api/game", json=movement)
+    assert put_response.status_code == 403
