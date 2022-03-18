@@ -27,9 +27,6 @@ export default {
     async sendMovement() {
       await putGameMovement(this.movement)
 
-    },
-    delay(time) {
-      return new Promise(resolve => setTimeout(resolve, time));
     }, 
     async onSquareClicked(square){
       if (square.soldier !==null && square.player === this.player){
@@ -38,10 +35,11 @@ export default {
         this.movement.to = square.square
       }
       if (this.movement.from !=="" && this.movement.to !==""){
-        this.sendMovement()
-        this.movement = {from:"", to:""}
-        await this.delay(30);
-        this.loadData()
+        this.sendMovement().then(async(result) => {
+          this.movement = {from:"", to:""}
+          this.loadData()
+          return result
+        })
 
       }
     }
