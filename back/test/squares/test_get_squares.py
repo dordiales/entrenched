@@ -48,7 +48,7 @@ def test_should_return_state_of_the_game():
         {"square": "D5", "soldier": None, "player": None},
         {"square": "D6", "soldier": None, "player": None},
         {"square": "D7", "soldier": "trooper", "player": "player_2"},
-        {"square": "D8", "soldier": None, "player": None},
+        {"square": "D8", "soldier": "trooper", "player": "player_1"},
         {"square": "D9", "soldier": None, "player": None},
         {"square": "E1", "soldier": None, "player": None},
         {"square": "E2", "soldier": None, "player": None},

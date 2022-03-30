@@ -23,7 +23,15 @@ def create_app(repositories):
         origin = body["from"]
         destination = body["to"]
         if repositories["squares"].is_valid_movement(origin, destination):
-            repositories["squares"].execute_move(origin, destination)
+            origin_content = repositories["squares"].get_content(origin)
+            destination_content = repositories["squares"].get_content(destination)
+            if (
+                destination_content.player != None
+                and destination_content.player != origin_content.player
+            ):
+                repositories["squares"].execute_assault(origin, destination)
+            else:
+                repositories["squares"].execute_move(origin, destination)
             return "", 200
         else:
             return "", 403

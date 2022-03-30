@@ -1,6 +1,5 @@
 import sqlite3
-
-from sqlalchemy import true
+from src.domain.soldiers import Soldier
 
 
 class Square:
@@ -73,7 +72,7 @@ class SquaresRepository:
             ("D5", null, null),
             ("D6", null, null),
             ("D7", "trooper", "player_2"),
-            ("D8", null, null),
+            ("D8", "trooper", "player_1"),
             ("D9", null, null),
             ("E1", null, null),
             ("E2", null, null),
@@ -132,6 +131,35 @@ class SquaresRepository:
         cursor.execute(update_origin, (origin,))
 
         conn.commit()
+
+    def execute_assault(self, origin, destination):
+        origin_content = self.get_content(origin)
+        destination_content = self.get_content(destination)
+
+        conn = self.create_conn()
+        cursor = conn.cursor()
+
+        attacker = Soldier(origin_content.soldier)
+        defender = Soldier(destination_content.soldier)
+
+        result = attacker.engage(defender)
+        print(result)
+        update_origin = ""
+        update_destination = ""
+        if result == "draw":
+            update_origin = (
+                """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
+            )
+            update_destination = (
+                """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
+            )
+
+        cursor.execute(update_origin, (origin,))
+        cursor.execute(update_destination, (destination,))
+
+        conn.commit()
+
+        return result
 
     def is_valid_movement(self, origin, destination):
         adjacent_rules = {
