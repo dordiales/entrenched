@@ -53,8 +53,8 @@ class SquaresRepository:
             ("B4", null, null),
             ("B5", null, null),
             ("B6", null, null),
-            ("B7", null, null),
-            ("B8", null, null),
+            ("B7", "trooper", "player_1"),
+            ("B8", "grenadier", "player_2"),
             ("B9", null, null),
             ("C1", null, null),
             ("C2", null, null),
@@ -153,9 +153,21 @@ class SquaresRepository:
             update_destination = (
                 """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
             )
+            cursor.execute(update_origin, (origin,))
+            cursor.execute(update_destination, (destination,))
 
-        cursor.execute(update_origin, (origin,))
-        cursor.execute(update_destination, (destination,))
+        if result == "win":
+            update_origin = (
+                """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
+            )
+            update_destination = (
+                """UPDATE squares SET soldier= ?, player = ? WHERE square = ?"""
+            )
+            cursor.execute(update_origin, (origin,))
+            cursor.execute(
+                update_destination,
+                (origin_content.soldier, origin_content.player, destination),
+            )
 
         conn.commit()
 
