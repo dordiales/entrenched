@@ -115,6 +115,12 @@ class SquaresRepository:
                 (origin_content.soldier, origin_content.player, destination),
             )
 
+        if result == "lose":
+            update_origin = (
+                """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
+            )
+            cursor.execute(update_origin, (origin,))
+
         conn.commit()
 
         return result

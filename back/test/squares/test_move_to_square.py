@@ -122,3 +122,21 @@ def test_winned_assault_should_result_in_attacker_in_the_defender_square():
         "soldier": "trooper",
         "player": "player_1",
     }
+
+
+def test_lost_assault_should_result_in_attacker_deleted():
+    client = setup()
+
+    movement = {"from": "B8", "to": "B7"}
+
+    put_response = client.put("api/game", json=movement)
+    assert put_response.status_code == 200
+
+    response = client.get("/api/game")
+
+    assert response.json[15] == {
+        "square": "B7",
+        "soldier": "trooper",
+        "player": "player_1",
+    }
+    assert response.json[16] == {"square": "B8", "soldier": None, "player": None}
