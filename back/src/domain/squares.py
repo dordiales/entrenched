@@ -35,60 +35,6 @@ class SquaresRepository:
         cursor.execute(sql)
         conn.commit()
 
-    def test_start(self):
-        sql = """
-            INSERT INTO squares (square, soldier, player) VALUES
-            ("A1", "trooper", "player_1"),
-            ("A2", "trooper", "player_1"),
-            ("A3", null, null),
-            ("A4", "trooper", "player_1"),
-            ("A5", null, null),
-            ("A6", null, null),
-            ("A7", "trooper", "player_1"),
-            ("A8", null, null),
-            ("A9", null, null),
-            ("B1", null, null),
-            ("B2", null, null),
-            ("B3", null, null),
-            ("B4", null, null),
-            ("B5", null, null),
-            ("B6", null, null),
-            ("B7", "trooper", "player_1"),
-            ("B8", "grenadier", "player_2"),
-            ("B9", null, null),
-            ("C1", null, null),
-            ("C2", null, null),
-            ("C3", null, null),
-            ("C4", null, null),
-            ("C5", null, null),
-            ("C6", null, null),
-            ("C7", null, null),
-            ("C8", null, null),
-            ("C9", null, null),
-            ("D1", null, null),
-            ("D2", null, null),
-            ("D3", null, null),
-            ("D4", null, null),
-            ("D5", null, null),
-            ("D6", null, null),
-            ("D7", "trooper", "player_2"),
-            ("D8", "trooper", "player_1"),
-            ("D9", null, null),
-            ("E1", null, null),
-            ("E2", null, null),
-            ("E3", null, null),
-            ("E4", "trooper", "player_2"),
-            ("E5", null, null),
-            ("E6", null, null),
-            ("E7", null, null),
-            ("E8", null, null),
-            ("E9", null, null)
-        """
-        conn = self.create_conn()
-        cursor = conn.cursor()
-        cursor.execute(sql)
-        conn.commit()
-
     def get_squares(self):
         sql = """SELECT * FROM squares"""
         conn = self.create_conn()
