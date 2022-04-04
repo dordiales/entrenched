@@ -8,7 +8,58 @@ def main():
     database_path = "data/database.db"
 
     squares_repository = SquaresRepository(database_path)
-    squares_repository.test_start()
+    combat_start = """
+            INSERT INTO squares (square, soldier, player) VALUES
+            ("A1", "trooper", "player_1"),
+            ("A2", "grenadier", "player_1"),
+            ("A3", null, null),
+            ("A4", "trooper", "player_1"),
+            ("A5", "grenadier", "player_1"),
+            ("A6", null, null),
+            ("A7", "trooper", "player_1"),
+            ("A8", "grenadier", "player_1"),
+            ("A9", null, null),
+            ("B1", null, null),
+            ("B2", null, null),
+            ("B3", null, null),
+            ("B4", null, null),
+            ("B5", null, null),
+            ("B6", null, null),
+            ("B7", null, null),
+            ("B8", null, null),
+            ("B9", null, null),
+            ("C1", null, null),
+            ("C2", null, null),
+            ("C3", null, null),
+            ("C4", null, null),
+            ("C5", null, null),
+            ("C6", null, null),
+            ("C7", null, null),
+            ("C8", null, null),
+            ("C9", null, null),
+            ("D1", null, null),
+            ("D2", null, null),
+            ("D3", null, null),
+            ("D4", null, null),
+            ("D5", null, null),
+            ("D6", null, null),
+            ("D7", null, null),
+            ("D8", null, null),
+            ("D9", null, null),
+            ("E1", null, null),
+            ("E2", "grenadier", "player_2"),
+            ("E3", "trooper", "player_2"),
+            ("E4", null, null),
+            ("E5", "grenadier", "player_2"),
+            ("E6", "trooper", "player_2"),
+            ("E7", null, null),
+            ("E8", "grenadier", "player_2"),
+            ("E9", "trooper", "player_2")
+        """
+    conn = squares_repository.create_conn()
+    cursor = conn.cursor()
+    cursor.execute(combat_start)
+    conn.commit()
 
 
 if __name__ == "__main__":
