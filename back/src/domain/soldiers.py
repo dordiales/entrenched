@@ -5,8 +5,9 @@ class Soldier:
 
     def asing_engage_rules(self, troop_type):
         engagement_ruleset = {
-            "trooper": {"trooper": "draw", "grenadier": "win"},
-            "grenadier": {"trooper": "lose", "grenadier": "draw"},
+            "trooper": {"trooper": "draw", "grenadier": "win", "machinegun": "lose"},
+            "grenadier": {"trooper": "lose", "grenadier": "draw", "machinegun": "win"},
+            "machinegun": {"trooper": "win", "grenadier": "lose", "machinegun": "draw"},
         }
         return engagement_ruleset[troop_type]
 

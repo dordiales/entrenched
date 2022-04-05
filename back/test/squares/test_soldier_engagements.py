@@ -1,29 +1,49 @@
 from src.domain.soldiers import Soldier
 
 
-def test_trooper_engage_trooper():
+def test_trooper_engagements():
 
     charlie = Soldier("trooper")
     jerry = Soldier("trooper")
+    hans = Soldier("grenadier")
+    brian = Soldier("machinegun")
 
-    result = charlie.engage(jerry)
+    result_1 = charlie.engage(jerry)
+    result_2 = charlie.engage(hans)
+    result_3 = charlie.engage(brian)
 
-    assert result.isalpha
-
-
-def test_trooper_should_have_correct_engagements():
-
-    charlie = Soldier("trooper")
-
-    expected_rules = {"trooper": "draw", "grenadier": "win"}
-
-    assert charlie.engage_rules == expected_rules
+    assert result_1 == "draw"
+    assert result_2 == "win"
+    assert result_3 == "lose"
 
 
-def test_grenadier_should_have_correct_engagements():
+def test_grenadier_engagements():
 
-    jerry = Soldier("grenadier")
+    charlie = Soldier("grenadier")
+    jerry = Soldier("trooper")
+    hans = Soldier("grenadier")
+    brian = Soldier("machinegun")
 
-    expected_rules = {"trooper": "lose", "grenadier": "draw"}
+    result_1 = charlie.engage(jerry)
+    result_2 = charlie.engage(hans)
+    result_3 = charlie.engage(brian)
 
-    assert jerry.engage_rules == expected_rules
+    assert result_1 == "lose"
+    assert result_2 == "draw"
+    assert result_3 == "win"
+
+
+def test_machinegun_engagements():
+
+    charlie = Soldier("machinegun")
+    jerry = Soldier("trooper")
+    hans = Soldier("grenadier")
+    brian = Soldier("machinegun")
+
+    result_1 = charlie.engage(jerry)
+    result_2 = charlie.engage(hans)
+    result_3 = charlie.engage(brian)
+
+    assert result_1 == "win"
+    assert result_2 == "lose"
+    assert result_3 == "draw"

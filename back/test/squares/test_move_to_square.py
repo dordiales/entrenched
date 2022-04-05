@@ -92,7 +92,7 @@ def test_should_move_only_to_adjacent_squares():
     assert put_response.status_code == 403
 
 
-def test_movement_to_enemy_square_should_resolve_assault():
+def test_draw_assault_should_result_in_both_soldiers_deleted():
     client = setup()
 
     movement = {"from": "D8", "to": "D7"}
