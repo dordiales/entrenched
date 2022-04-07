@@ -47,3 +47,19 @@ def test_machinegun_engagements():
     assert result_1 == "win"
     assert result_2 == "lose"
     assert result_3 == "draw"
+
+
+def test_HQ_engagements():
+
+    head_quarter = Soldier("hq")
+    jerry = Soldier("trooper")
+    hans = Soldier("grenadier")
+    brian = Soldier("machinegun")
+
+    result_1 = jerry.engage(head_quarter)
+    result_2 = hans.engage(head_quarter)
+    result_3 = brian.engage(head_quarter)
+
+    assert result_1 == "win"
+    assert result_2 == "win"
+    assert result_3 == "win"
