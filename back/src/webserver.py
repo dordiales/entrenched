@@ -22,18 +22,25 @@ def create_app(repositories):
         body = request.json
         origin = body["from"]
         destination = body["to"]
-        if repositories["squares"].is_valid_movement(origin, destination):
-            origin_content = repositories["squares"].get_content(origin)
-            destination_content = repositories["squares"].get_content(destination)
-            if (
-                destination_content.player != None
-                and destination_content.player != origin_content.player
-            ):
-                repositories["squares"].execute_assault(origin, destination)
-            else:
-                repositories["squares"].execute_move(origin, destination)
-            return "", 200
+
+        if not repositories["squares"].is_valid_movement(origin, destination):
+            return "Invalid Movement", 403
+
+        origin_content = repositories["squares"].get_content(origin)
+
+        if origin_content.soldier == "hq":
+            return "HQ cannot move", 403
+
+        destination_content = repositories["squares"].get_content(destination)
+
+        if (
+            destination_content.player != None
+            and destination_content.player != origin_content.player
+        ):
+            repositories["squares"].execute_assault(origin, destination)
         else:
-            return "", 403
+            repositories["squares"].execute_move(origin, destination)
+
+        return "Movement Executed", 200
 
     return app

@@ -52,7 +52,7 @@ def setup():
             ("E3", null, null),
             ("E4", "trooper", "player_2"),
             ("E5", null, null),
-            ("E6", null, null),
+            ("E6", "hq", "player_2"),
             ("E7", null, null),
             ("E8", null, null),
             ("E9", null, null)
@@ -140,3 +140,21 @@ def test_lost_assault_should_result_in_attacker_deleted():
         "player": "player_1",
     }
     assert response.json[16] == {"square": "B8", "soldier": None, "player": None}
+
+
+def test_HQ_should_not_move():
+    client = setup()
+
+    movement = {"from": "E6", "to": "E7"}
+
+    put_response = client.put("api/game", json=movement)
+    assert put_response.status_code == 403
+
+    response = client.get("/api/game")
+
+    assert response.json[41] == {
+        "square": "E6",
+        "soldier": "hq",
+        "player": "player_2",
+    }
+    assert response.json[42] == {"square": "E7", "soldier": None, "player": None}
