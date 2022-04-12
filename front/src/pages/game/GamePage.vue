@@ -4,7 +4,8 @@
           {{square.soldier}}
         </article>
     </section>
-    {{movement}}
+    <p>Movimiento:{{movement}} Ganador: {{winner}}</p>
+    
 
 </template>
 
@@ -16,7 +17,8 @@ export default {
     return {
       player: "player_1",
       squares: [],
-      movement: {from:"", to:""}
+      movement: {from:"", to:""},
+      winner: ""
     };
   },
   mounted() {
@@ -25,6 +27,12 @@ export default {
   methods: {
     async loadData() {
       this.squares = await getGameState()
+      const hqList = this.squares.filter(e=>e.soldier == "hq")
+         
+        if (hqList.length !== 2) {
+          let winner_player = hqList.pop().player
+          this.winner = winner_player
+        }
     },
     async sendMovement() {
       await putGameMovement(this.movement)
@@ -40,6 +48,7 @@ export default {
         this.sendMovement().then(async(result) => {
           this.movement = {from:"", to:""}
           this.loadData()
+        
           return result
         })
 
