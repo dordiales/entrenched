@@ -4,21 +4,27 @@
           {{square.soldier}}
         </article>
     </section>
-    <p>Movimiento:{{movement}} Ganador: {{winner}}</p>
+
+    <h3>Debug</h3>
+    <p>Jugador: {{player}} Movimiento:{{movement}} Ganador: {{winner}}</p>
     
+    <WinnerModal v-show="modalOpened" :winner="winner"/>
 
 </template>
 
 <script>
 import {getGameState, putGameMovement} from '@/services/api.js';
+import WinnerModal from './WinnerModal.vue';
 
 export default {
+    components: {WinnerModal},
     data() {
     return {
       player: "player_1",
       squares: [],
       movement: {from:"", to:""},
-      winner: ""
+      winner: "",
+      modalOpened: false,
     };
   },
   mounted() {
@@ -27,11 +33,13 @@ export default {
   methods: {
     async loadData() {
       this.squares = await getGameState()
+
       const hqList = this.squares.filter(e=>e.soldier == "hq")
          
         if (hqList.length !== 2) {
           let winner_player = hqList.pop().player
           this.winner = winner_player
+          this.openWinnerModal()
         }
     },
     async sendMovement() {
@@ -51,9 +59,24 @@ export default {
         
           return result
         })
+        this.alternatePlayer()
 
       }
-    }
+    },
+    alternatePlayer(){
+      if (this.player === "player_1") {
+        this.player = "player_2"
+      }else{
+        this.player = "player_1"
+      }
+    },
+    openWinnerModal() {
+      this.modalOpened = true;
+      console.log("click modal" + this.modalOpened);
+    },
+    closeWinnerModal() {
+      this.modalOpened = false;
+    },
   },
 }
 </script>
