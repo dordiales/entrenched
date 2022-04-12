@@ -1,6 +1,8 @@
 <template>
     <section class="game-board">
-        <article class="square" v-for="square in squares" :key="square.square" @click="onSquareClicked(square)">{{square.soldier}}</article>
+        <article  v-for="square in squares" class="square" v-bind:class="square.player" :key="square.square" @click="onSquareClicked(square)">
+          {{square.soldier}}
+        </article>
     </section>
     {{movement}}
 
@@ -55,7 +57,14 @@ export default {
         margin: 5em
     }
     .square {
-      border: 1px solid black
+      border: 1px solid black;
+      background-color: beige;
 
+    }
+    .player_1 {
+      color: #5a6db1;
+    }
+    .player_2 {
+      color: #b37c34;
     }
 </style>
