@@ -6,7 +6,7 @@
     </section>
 
     <h3>Debug</h3>
-    <p>Jugador: {{player}} Movimiento:{{movement}} Ganador: {{winner}}</p>
+    <p>Jugador: {{activePlayer}} Movimiento:{{movement}} Ganador: {{winner}}</p>
     
     <WinnerModal v-show="modalOpened" :winner="winner"/>
 
@@ -20,7 +20,7 @@ export default {
     components: {WinnerModal},
     data() {
     return {
-      player: "player_1",
+      activePlayer: "player_1",
       squares: [],
       movement: {from:"", to:""},
       winner: "",
@@ -47,7 +47,7 @@ export default {
 
     }, 
     async onSquareClicked(square){
-      if (square.soldier !==null && square.player === this.player){
+      if (square.soldier !==null && square.player === this.activePlayer){
         this.movement.from = square.square}
       if (this.movement.from !=="" && this.movement.from !== square.square){
         this.movement.to = square.square
@@ -64,10 +64,10 @@ export default {
       }
     },
     alternatePlayer(){
-      if (this.player === "player_1") {
-        this.player = "player_2"
+      if (this.activePlayer === "player_1") {
+        this.activePlayer = "player_2"
       }else{
-        this.player = "player_1"
+        this.activePlayer = "player_1"
       }
     },
     openWinnerModal() {
