@@ -1,9 +1,13 @@
+from telnetlib import GA
+
+
 def main():
     import sys
 
     sys.path.insert(0, "")
 
     from src.domain.squares import SquaresRepository
+    from src.domain.games import GamesRepository
 
     database_path = "data/database.db"
 
@@ -59,6 +63,15 @@ def main():
     conn = squares_repository.create_conn()
     cursor = conn.cursor()
     cursor.execute(combat_start)
+    conn.commit()
+
+    games_repository = GamesRepository(database_path)
+
+    first_game = """INSERT INTO games VALUES
+                    ("01", "player_1")"""
+    conn = games_repository.create_conn()
+    cursor = conn.cursor()
+    cursor.execute(first_game)
     conn.commit()
 
 
