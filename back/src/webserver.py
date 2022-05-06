@@ -12,12 +12,12 @@ def create_app(repositories):
     def hello_world():
         return "Esta es la API de Entrenched"
 
-    @app.route("/api/game", methods=["GET"])
+    @app.route("/api/board", methods=["GET"])
     def get_board_state():
         board_state = repositories["squares"].get_squares()
         return object_to_json(board_state)
 
-    @app.route("/api/game", methods=["PUT"])
+    @app.route("/api/board", methods=["PUT"])
     def move_soldier():
         body = request.json
         origin = body["from"]

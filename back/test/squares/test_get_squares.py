@@ -62,7 +62,7 @@ def test_should_return_state_of_the_game():
     cursor.execute(sql)
     conn.commit()
 
-    response = client.get("/api/game")
+    response = client.get("/api/board")
 
     assert response.json == [
         {"square": "A1", "soldier": "trooper", "player": "player_1"},

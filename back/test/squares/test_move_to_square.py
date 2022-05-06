@@ -70,10 +70,10 @@ def test_should_move_soldier_from_a_square_to_another():
 
     movement = {"from": "A1", "to": "B1"}
 
-    put_response = client.put("api/game", json=movement)
+    put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 200
 
-    response = client.get("/api/game")
+    response = client.get("/api/board")
 
     assert response.json[0] == {"square": "A1", "soldier": None, "player": None}
     assert response.json[9] == {
@@ -88,7 +88,7 @@ def test_should_move_only_to_adjacent_squares():
 
     movement = {"from": "A1", "to": "B2"}
 
-    put_response = client.put("api/game", json=movement)
+    put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 403
 
 
@@ -97,10 +97,10 @@ def test_draw_assault_should_result_in_both_soldiers_deleted():
 
     movement = {"from": "D8", "to": "D7"}
 
-    put_response = client.put("api/game", json=movement)
+    put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 200
 
-    response = client.get("/api/game")
+    response = client.get("/api/board")
 
     assert response.json[33] == {"square": "D7", "soldier": None, "player": None}
     assert response.json[34] == {"square": "D8", "soldier": None, "player": None}
@@ -111,10 +111,10 @@ def test_winned_assault_should_result_in_attacker_in_the_defender_square():
 
     movement = {"from": "B7", "to": "B8"}
 
-    put_response = client.put("api/game", json=movement)
+    put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 200
 
-    response = client.get("/api/game")
+    response = client.get("/api/board")
 
     assert response.json[15] == {"square": "B7", "soldier": None, "player": None}
     assert response.json[16] == {
@@ -129,10 +129,10 @@ def test_lost_assault_should_result_in_attacker_deleted():
 
     movement = {"from": "B8", "to": "B7"}
 
-    put_response = client.put("api/game", json=movement)
+    put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 200
 
-    response = client.get("/api/game")
+    response = client.get("/api/board")
 
     assert response.json[15] == {
         "square": "B7",
@@ -147,10 +147,10 @@ def test_HQ_should_not_move():
 
     movement = {"from": "E6", "to": "E7"}
 
-    put_response = client.put("api/game", json=movement)
+    put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 403
 
-    response = client.get("/api/game")
+    response = client.get("/api/board")
 
     assert response.json[41] == {
         "square": "E6",
