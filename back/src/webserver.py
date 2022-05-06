@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from src.lib.utils import object_to_json
@@ -13,9 +13,9 @@ def create_app(repositories):
         return "Esta es la API de Entrenched"
 
     @app.route("/api/game", methods=["GET"])
-    def get_game_state():
-        game_state = repositories["squares"].get_squares()
-        return object_to_json(game_state)
+    def get_board_state():
+        board_state = repositories["squares"].get_squares()
+        return object_to_json(board_state)
 
     @app.route("/api/game", methods=["PUT"])
     def move_soldier():
@@ -42,5 +42,11 @@ def create_app(repositories):
             repositories["squares"].execute_move(origin, destination)
 
         return "Movement Executed", 200
+
+    @app.route("/api/games/<id>", methods=["GET"])
+    def get_game_current_state(id):
+        game = repositories["games"].get_game(id)
+        game_state = game.state()
+        return jsonify(game_state)
 
     return app
