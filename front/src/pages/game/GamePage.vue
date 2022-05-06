@@ -5,6 +5,8 @@
         </article>
     </section>
 
+    <button @click="loadData">Refrescar estado</button>
+
     <h3>Debug</h3>
     <p>Jugador: {{activePlayer}} Movimiento:{{movement}} Ganador: {{winner}}</p>
     
@@ -13,7 +15,7 @@
 </template>
 
 <script>
-import {getGameState, putGameMovement} from '@/services/api.js';
+import {getGameState, putGameMovement, getPlayerTurn} from '@/services/api.js';
 import WinnerModal from './WinnerModal.vue';
 
 export default {
@@ -33,6 +35,7 @@ export default {
   methods: {
     async loadData() {
       this.squares = await getGameState()
+      this.activePlayer = await getPlayerTurn()
 
       const hqList = this.squares.filter(e=>e.soldier == "hq")
          
@@ -59,15 +62,6 @@ export default {
         
           return result
         })
-        this.alternatePlayer()
-
-      }
-    },
-    alternatePlayer(){
-      if (this.activePlayer === "player_1") {
-        this.activePlayer = "player_2"
-      }else{
-        this.activePlayer = "player_1"
       }
     },
     openWinnerModal() {
