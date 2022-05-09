@@ -22,6 +22,7 @@ def create_app(repositories):
         body = request.json
         origin = body["from"]
         destination = body["to"]
+        game_id = body["gameId"]
 
         if not repositories["squares"].is_valid_movement(origin, destination):
             return "Invalid Movement", 403
@@ -41,6 +42,7 @@ def create_app(repositories):
         else:
             repositories["squares"].execute_move(origin, destination)
 
+        repositories["games"].alternate_active_player(game_id)
         return "Movement Executed", 200
 
     @app.route("/api/games/<id>", methods=["GET"])

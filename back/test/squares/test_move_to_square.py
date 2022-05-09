@@ -2,12 +2,19 @@ from src.lib.utils import temp_file
 
 from src.webserver import create_app
 from src.domain.squares import SquaresRepository
+from src.domain.games import GamesRepository
 
 
 def setup():
-    squares_repository = SquaresRepository(temp_file())
-    app = create_app(repositories={"squares": squares_repository})
+    test_database = temp_file()
+    squares_repository = SquaresRepository(test_database)
+    games_repository = GamesRepository(test_database)
+    app = create_app(
+        repositories={"squares": squares_repository, "games": games_repository}
+    )
     client = app.test_client()
+
+    games_repository.start_game("01")
 
     combat_start = """
             INSERT INTO squares (square, soldier, player) VALUES
@@ -68,7 +75,7 @@ def setup():
 def test_should_move_soldier_from_a_square_to_another():
     client = setup()
 
-    movement = {"from": "A1", "to": "B1"}
+    movement = {"from": "A1", "to": "B1", "gameId": "01"}
 
     put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 200
@@ -86,7 +93,7 @@ def test_should_move_soldier_from_a_square_to_another():
 def test_should_move_only_to_adjacent_squares():
     client = setup()
 
-    movement = {"from": "A1", "to": "B2"}
+    movement = {"from": "A1", "to": "B2", "gameId": "01"}
 
     put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 403
@@ -95,7 +102,7 @@ def test_should_move_only_to_adjacent_squares():
 def test_draw_assault_should_result_in_both_soldiers_deleted():
     client = setup()
 
-    movement = {"from": "D8", "to": "D7"}
+    movement = {"from": "D8", "to": "D7", "gameId": "01"}
 
     put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 200
@@ -109,7 +116,7 @@ def test_draw_assault_should_result_in_both_soldiers_deleted():
 def test_winned_assault_should_result_in_attacker_in_the_defender_square():
     client = setup()
 
-    movement = {"from": "B7", "to": "B8"}
+    movement = {"from": "B7", "to": "B8", "gameId": "01"}
 
     put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 200
@@ -127,7 +134,7 @@ def test_winned_assault_should_result_in_attacker_in_the_defender_square():
 def test_lost_assault_should_result_in_attacker_deleted():
     client = setup()
 
-    movement = {"from": "B8", "to": "B7"}
+    movement = {"from": "B8", "to": "B7", "gameId": "01"}
 
     put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 200
@@ -145,7 +152,7 @@ def test_lost_assault_should_result_in_attacker_deleted():
 def test_HQ_should_not_move():
     client = setup()
 
-    movement = {"from": "E6", "to": "E7"}
+    movement = {"from": "E6", "to": "E7", "gameId": "01"}
 
     put_response = client.put("api/board", json=movement)
     assert put_response.status_code == 403
@@ -158,3 +165,30 @@ def test_HQ_should_not_move():
         "player": "player_2",
     }
     assert response.json[42] == {"square": "E7", "soldier": None, "player": None}
+
+
+def test_active_player_should_alternate_after_succesfull_movement():
+    client = setup()
+
+    movement = {"from": "A1", "to": "B1", "gameId": "01"}
+
+    put_response = client.put("api/board", json=movement)
+    assert put_response.status_code == 200
+
+    game_state = client.get("/api/games/01")
+
+    assert game_state.json == {"active_player": "player_2"}
+
+
+def test_active_player_should_not_alternate_after_unsuccesfull_movement():
+    client = setup()
+
+    movement = {"from": "A1", "to": "B2", "gameId": "01"}
+    initial_game_state = {"active_player": "player_1"}
+
+    put_response = client.put("api/board", json=movement)
+    assert put_response.status_code == 403
+
+    final_game_state = client.get("/api/games/01")
+
+    assert final_game_state.json == initial_game_state

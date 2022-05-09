@@ -54,3 +54,20 @@ class GamesRepository:
         game = Game(**data)
 
         return game
+
+    def alternate_active_player(self, gameId):
+        game_state = self.get_game(gameId)
+
+        if game_state.active_player == "player_1":
+            sql = """UPDATE games
+                    SET active_player = 'player_2'
+                    WHERE id = :id"""
+        else:
+            sql = """UPDATE games
+                    SET active_player = 'player_1'
+                    WHERE id = :id"""
+
+        conn = self.create_conn()
+        cursor = conn.cursor()
+        cursor.execute(sql, {"id": gameId})
+        conn.commit()
