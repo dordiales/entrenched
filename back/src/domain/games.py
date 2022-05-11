@@ -50,9 +50,10 @@ class GamesRepository:
         cursor.execute(sql, {"id": id})
 
         data = cursor.fetchone()
+        if data is None:
+            return None
 
         game = Game(**data)
-
         return game
 
     def alternate_active_player(self, gameId):

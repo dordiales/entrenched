@@ -51,4 +51,14 @@ def create_app(repositories):
         game_state = game.state()
         return jsonify(game_state)
 
+    @app.route("/api/games", methods=["POST"])
+    def create_new_game():
+        body = request.json
+        game_id = body["gameId"]
+        game = repositories["games"].get_game(game_id)
+        if game is None:
+            repositories["games"].start_game(game_id)
+            return "Game created successfully", 201
+        return "Game already exist", 307
+
     return app
