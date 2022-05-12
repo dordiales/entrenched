@@ -25,12 +25,13 @@ class SquaresRepository:
     def init_tables(self):
         sql = """
             CREATE TABLE IF NOT EXISTS squares (
-                square VARCHAR PRIMARY KEY,
+                id INTEGER PRIMARY KEY,
+                square VARCHAR,
                 soldier VARCHAR,
                 player VARCHAR,
                 game VARCHAR,
                 FOREIGN KEY (game) REFERENCES games(id)
-                ON DELETE CASCADE
+
             )
         """
         conn = self.create_conn()
