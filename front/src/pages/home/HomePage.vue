@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import {startNewGame} from '@/services/api.js';
 
 export default {
   name: 'Home',
@@ -21,8 +22,13 @@ export default {
   mounted() {
   },
   methods: {
-    onClickMoveToGame(){
-      this.$router.push(`/game/${this.gameName}`)
+    async onClickMoveToGame(){
+      console.log(this.gameName)
+      const response = await startNewGame(this.gameName).then(async() => {
+          this.$router.push(`/game/${this.gameName}`)
+        })
+        
+      return response
     }
   }
 

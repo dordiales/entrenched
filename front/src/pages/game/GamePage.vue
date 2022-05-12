@@ -27,7 +27,7 @@ export default {
       movement: {from:"", to:""},
       winner: "",
       modalOpened: false,
-      gameId: '01'
+      gameId: this.$route.params.gameId
     };
   },
   mounted() {
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     async loadData() {
-      this.squares = await getGameState()
+      this.squares = await getGameState(this.gameId)
       this.activePlayer = await getPlayerTurn(this.gameId)
 
       const hqList = this.squares.filter(e=>e.soldier == "hq")
@@ -47,9 +47,8 @@ export default {
         }
     },
     async sendMovement() {
-      const gameMovement = {"from":this.movement.from, "to":this.movement.to, "gameId": this.gameId}
-      console.log(gameMovement)
-      await putGameMovement(gameMovement)
+      
+      await putGameMovement(this.movement, this.gameId)
 
     }, 
     async onSquareClicked(square){
