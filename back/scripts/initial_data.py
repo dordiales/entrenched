@@ -14,9 +14,6 @@ def main():
     games_repository = GamesRepository(database_path)
     squares_repository = SquaresRepository(database_path)
 
-    games_repository.start_game("01")
-    squares_repository.start_game("01")
-
 
 if __name__ == "__main__":
     main()
