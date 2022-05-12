@@ -61,11 +61,11 @@ class SquaresRepository:
 
         return result
 
-    def get_content(self, square):
-        sql = """SELECT * FROM squares WHERE square = :square"""
+    def get_content(self, square, game_id):
+        sql = """SELECT * FROM squares WHERE square = :square AND game= :id"""
         conn = self.create_conn()
         cursor = conn.cursor()
-        cursor.execute(sql, {"square": square})
+        cursor.execute(sql, {"square": square, "id": game_id})
 
         data = cursor.fetchone()
         this_square = Square(
@@ -73,27 +73,51 @@ class SquaresRepository:
         )
         return this_square
 
-    def execute_move(self, origin, destination):
-        origin_content = self.get_content(origin)
+    def move_soldier(self, origin, destination, game_id):
+        if not self.is_valid_movement(origin, destination):
+            return {"message": "Invalid Movement", "status_code": 403}
+
+        origin_content = self.get_content(origin, game_id)
+
+        if origin_content.soldier == "hq":
+            return {"message": "HQ cannot move", "status_code": 403}
+
+        destination_content = self.get_content(destination, game_id)
+
+        if (
+            destination_content.player != None
+            and destination_content.player != origin_content.player
+        ):
+            self.execute_assault(origin, destination, game_id)
+        else:
+            self.execute_move(origin, destination, game_id)
+        return {"message": "Movement Executed", "status_code": 200}
+
+    def execute_move(self, origin, destination, game_id):
+        origin_content = self.get_content(origin, game_id)
 
         conn = self.create_conn()
         cursor = conn.cursor()
 
-        sql_movement = """UPDATE squares SET soldier= ?, player = ? WHERE square = ?"""
+        sql_movement = """UPDATE squares SET soldier= :soldier, player = :player WHERE square = :square AND game = :id"""
         cursor.execute(
-            sql_movement, (origin_content.soldier, origin_content.player, destination)
+            sql_movement,
+            {
+                "soldier": origin_content.soldier,
+                "player": origin_content.player,
+                "square": destination,
+                "id": game_id,
+            },
         )
 
-        update_origin = (
-            """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
-        )
-        cursor.execute(update_origin, (origin,))
+        update_origin = """UPDATE squares SET soldier= null, player = null WHERE square = :square AND game = :id"""
+        cursor.execute(update_origin, {"square": origin, "id": game_id})
 
         conn.commit()
 
-    def execute_assault(self, origin, destination):
-        origin_content = self.get_content(origin)
-        destination_content = self.get_content(destination)
+    def execute_assault(self, origin, destination, game_id):
+        origin_content = self.get_content(origin, game_id)
+        destination_content = self.get_content(destination, game_id)
 
         conn = self.create_conn()
         cursor = conn.cursor()
@@ -106,33 +130,28 @@ class SquaresRepository:
         update_origin = ""
         update_destination = ""
         if result == "draw":
-            update_origin = (
-                """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
-            )
-            update_destination = (
-                """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
-            )
-            cursor.execute(update_origin, (origin,))
-            cursor.execute(update_destination, (destination,))
+            update_origin = """UPDATE squares SET soldier= null, player = null WHERE square = :square AND game= :id"""
+            update_destination = """UPDATE squares SET soldier= null, player = null WHERE square = :square AND game= :id"""
+            cursor.execute(update_origin, {"square": origin, "id": game_id})
+            cursor.execute(update_destination, {"square": destination, "id": game_id})
 
         if result == "win":
-            update_origin = (
-                """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
-            )
-            update_destination = (
-                """UPDATE squares SET soldier= ?, player = ? WHERE square = ?"""
-            )
-            cursor.execute(update_origin, (origin,))
+            update_origin = """UPDATE squares SET soldier= null, player = null WHERE square = :square AND game= :id"""
+            update_destination = """UPDATE squares SET soldier= :soldier, player = :player WHERE square = :square AND game = :id"""
+            cursor.execute(update_origin, {"square": origin, "id": game_id})
             cursor.execute(
                 update_destination,
-                (origin_content.soldier, origin_content.player, destination),
+                {
+                    "soldier": origin_content.soldier,
+                    "player": origin_content.player,
+                    "square": destination,
+                    "id": game_id,
+                },
             )
 
         if result == "lose":
-            update_origin = (
-                """UPDATE squares SET soldier= null, player = null WHERE square = ?"""
-            )
-            cursor.execute(update_origin, (origin,))
+            update_origin = """UPDATE squares SET soldier= null, player = null WHERE square = :square AND game= :id"""
+            cursor.execute(update_origin, {"square": origin, "id": game_id})
 
         conn.commit()
 

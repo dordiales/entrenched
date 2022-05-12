@@ -27,26 +27,14 @@ def create_app(repositories):
         destination = body["to"]
         game_id = id
 
-        if not repositories["squares"].is_valid_movement(origin, destination):
-            return "Invalid Movement", 403
-
-        origin_content = repositories["squares"].get_content(origin)
-
-        if origin_content.soldier == "hq":
-            return "HQ cannot move", 403
-
-        destination_content = repositories["squares"].get_content(destination)
-
-        if (
-            destination_content.player != None
-            and destination_content.player != origin_content.player
-        ):
-            repositories["squares"].execute_assault(origin, destination)
-        else:
-            repositories["squares"].execute_move(origin, destination)
+        movement_result = repositories["squares"].move_soldier(
+            origin, destination, game_id
+        )
+        if movement_result["status_code"] == 403:
+            return movement_result["message"], movement_result["status_code"]
 
         repositories["games"].alternate_active_player(game_id)
-        return "Movement Executed", 200
+        return movement_result["message"], movement_result["status_code"]
 
     @app.route("/api/games/<id>", methods=["GET"])
     def get_game_current_state(id):
