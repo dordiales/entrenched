@@ -111,3 +111,66 @@ def test_should_return_state_of_the_game():
         {"square": "E8", "soldier": None, "player": None},
         {"square": "E9", "soldier": None, "player": None},
     ]
+
+
+def test_api_should_return_404_error_if_game_not_exist():
+    squares_repository = SquaresRepository(temp_file())
+    app = create_app(repositories={"squares": squares_repository})
+    client = app.test_client()
+
+    sql = """
+            INSERT INTO squares (square, soldier, player, game) VALUES
+            ("A1", "trooper", "player_1", "01"),
+            ("A2", "trooper", "player_1", "01"),
+            ("A3", null, null, "01"),
+            ("A4", "trooper", "player_1", "01"),
+            ("A5", null, null, "01"),
+            ("A6", null, null, "01"),
+            ("A7", "trooper", "player_1", "01"),
+            ("A8", null, null, "01"),
+            ("A9", null, null, "01"),
+            ("B1", null, null, "01"),
+            ("B2", null, null, "01"),
+            ("B3", null, null, "01"),
+            ("B4", null, null, "01"),
+            ("B5", null, null, "01"),
+            ("B6", null, null, "01"),
+            ("B7", null, null, "01"),
+            ("B8", null, null, "01"),
+            ("B9", null, null, "01"),
+            ("C1", null, null, "01"),
+            ("C2", null, null, "01"),
+            ("C3", null, null, "01"),
+            ("C4", null, null, "01"),
+            ("C5", null, null, "01"),
+            ("C6", null, null, "01"),
+            ("C7", null, null, "01"),
+            ("C8", null, null, "01"),
+            ("C9", null, null, "01"),
+            ("D1", null, null, "01"),
+            ("D2", null, null, "01"),
+            ("D3", null, null, "01"),
+            ("D4", null, null, "01"),
+            ("D5", null, null, "01"),
+            ("D6", null, null, "01"),
+            ("D7", "trooper", "player_2", "01"),
+            ("D8", "trooper", "player_1", "01"),
+            ("D9", null, null, "01"),
+            ("E1", null, null, "01"),
+            ("E2", null, null, "01"),
+            ("E3", null, null, "01"),
+            ("E4", "trooper", "player_2", "01"),
+            ("E5", null, null, "01"),
+            ("E6", null, null, "01"),
+            ("E7", null, null, "01"),
+            ("E8", null, null, "01"),
+            ("E9", null, null, "01")
+        """
+    conn = squares_repository.create_conn()
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    conn.commit()
+
+    response = client.get("/api/board/02")
+
+    assert response.status_code == 404

@@ -15,6 +15,8 @@ def create_app(repositories):
     @app.route("/api/board/<id>", methods=["GET"])
     def get_board_state(id):
         board_state = repositories["squares"].get_squares(id)
+        if board_state == []:
+            return "Board not found", 404
 
         return object_to_json(board_state)
 
