@@ -12,17 +12,18 @@ def create_app(repositories):
     def hello_world():
         return "Esta es la API de Entrenched"
 
-    @app.route("/api/board", methods=["GET"])
-    def get_board_state():
-        board_state = repositories["squares"].get_squares()
+    @app.route("/api/board/<id>", methods=["GET"])
+    def get_board_state(id):
+        board_state = repositories["squares"].get_squares(id)
+
         return object_to_json(board_state)
 
-    @app.route("/api/board", methods=["PUT"])
-    def move_soldier():
+    @app.route("/api/board/<id>", methods=["PUT"])
+    def move_soldier(id):
         body = request.json
         origin = body["from"]
         destination = body["to"]
-        game_id = body["gameId"]
+        game_id = id
 
         if not repositories["squares"].is_valid_movement(origin, destination):
             return "Invalid Movement", 403
@@ -58,6 +59,7 @@ def create_app(repositories):
         game = repositories["games"].get_game(game_id)
         if game is None:
             repositories["games"].start_game(game_id)
+            repositories["squares"].start_game(game_id)
             return "Game created successfully", 201
         return "Game already exist", 307
 

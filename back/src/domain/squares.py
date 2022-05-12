@@ -27,7 +27,10 @@ class SquaresRepository:
             CREATE TABLE IF NOT EXISTS squares (
                 square VARCHAR PRIMARY KEY,
                 soldier VARCHAR,
-                player VARCHAR
+                player VARCHAR,
+                game VARCHAR,
+                FOREIGN KEY (game) REFERENCES games(id)
+                ON DELETE CASCADE
             )
         """
         conn = self.create_conn()
@@ -35,17 +38,25 @@ class SquaresRepository:
         cursor.execute(sql)
         conn.commit()
 
-    def get_squares(self):
-        sql = """SELECT * FROM squares"""
+    def start_game(self, game_id):
         conn = self.create_conn()
         cursor = conn.cursor()
-        cursor.execute(sql)
+        cursor.execute(starting_state, {"id": game_id})
+        conn.commit()
+
+    def get_squares(self, game_id):
+        sql = """SELECT * FROM squares WHERE game = :game_id"""
+        conn = self.create_conn()
+        cursor = conn.cursor()
+        cursor.execute(sql, {"game_id": game_id})
 
         data = cursor.fetchall()
 
         result = []
         for item in data:
-            square = Square(**item)
+            square = Square(
+                square=item["square"], soldier=item["soldier"], player=item["player"]
+            )
             result.append(square)
 
         return result
@@ -57,7 +68,9 @@ class SquaresRepository:
         cursor.execute(sql, {"square": square})
 
         data = cursor.fetchone()
-        this_square = Square(**data)
+        this_square = Square(
+            square=data["square"], soldier=data["soldier"], player=data["player"]
+        )
         return this_square
 
     def execute_move(self, origin, destination):
@@ -178,3 +191,53 @@ class SquaresRepository:
             return True
         else:
             return False
+
+
+starting_state = """
+            INSERT INTO squares (square, soldier, player, game) VALUES
+            ("A1", "trooper", "player_1", :id),
+            ("A2", "grenadier", "player_1", :id),
+            ("A3", "machinegun", "player_1", :id),
+            ("A4", "hq", "player_1", :id),
+            ("A5", "grenadier", "player_1", :id),
+            ("A6", "machinegun", "player_1", :id),
+            ("A7", "trooper", "player_1", :id),
+            ("A8", "grenadier", "player_1", :id),
+            ("A9", "machinegun", "player_1", :id),
+            ("B1", null, null, :id),
+            ("B2", null, null, :id),
+            ("B3", null, null, :id),
+            ("B4", "trooper", "player_1", :id),
+            ("B5", null, null, :id),
+            ("B6", null, null, :id),
+            ("B7", null, null, :id),
+            ("B8", null, null, :id),
+            ("B9", null, null, :id),
+            ("C1", null, null, :id),
+            ("C2", null, null, :id),
+            ("C3", null, null, :id),
+            ("C4", null, null, :id),
+            ("C5", null, null, :id),
+            ("C6", null, null, :id),
+            ("C7", null, null, :id),
+            ("C8", null, null, :id),
+            ("C9", null, null, :id),
+            ("D1", null, null, :id),
+            ("D2", null, null, :id),
+            ("D3", null, null, :id),
+            ("D4", null, null, :id),
+            ("D5", null, null, :id),
+            ("D6", "trooper", "player_2", :id),
+            ("D7", null, null, :id),
+            ("D8", null, null, :id),
+            ("D9", null, null, :id),
+            ("E1", "machinegun", "player_2", :id),
+            ("E2", "grenadier", "player_2", :id),
+            ("E3", "trooper", "player_2", :id),
+            ("E4", "machinegun", "player_2", :id),
+            ("E5", "grenadier", "player_2", :id),
+            ("E6", "hq", "player_2", :id),
+            ("E7", "machinegun", "player_2", :id),
+            ("E8", "grenadier", "player_2", :id),
+            ("E9", "trooper", "player_2", :id)
+        """
