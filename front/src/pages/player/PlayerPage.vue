@@ -5,10 +5,10 @@
         </article>
     </section>
 
-    <button @click="joinAsPlayer('player_1')">Unirse como Jugador 1</button>
-    <button @click="joinAsPlayer('player_2')">Unirse como Jugador 2</button>
-
     <button @click="loadData">Refrescar estado</button>
+
+    <h3>Debug</h3>
+    <p>Jugador: {{activePlayer}} Movimiento:{{movement}} Ganador: {{winner}}</p>
     
     <WinnerModal v-show="modalOpened" :winner="winner"/>
 
@@ -23,6 +23,8 @@ export default {
     data() {
     return {
       activePlayer: "player_1",
+      user: this.$route.params.playerId,
+      player: "",
       squares: [],
       movement: {from:"", to:""},
       winner: "",
@@ -33,10 +35,14 @@ export default {
   mounted() {
     this.loadData();
   },
+  computed:{
+      
+  },
   methods: {
     async loadData() {
       this.squares = await getGameState(this.gameId)
       this.activePlayer = await getPlayerTurn(this.gameId)
+
 
       const hqList = this.squares.filter(e=>e.soldier == "hq")
          
@@ -51,13 +57,20 @@ export default {
       await putGameMovement(this.movement, this.gameId)
 
     }, 
+    isValidMovement(){
+          if (this.movement.from !=="" && this.movement.to !==""){
+              return true
+          } else {
+              return false
+          }
+      },
     async onSquareClicked(square){
       if (square.soldier !==null && square.player === this.activePlayer){
         this.movement.from = square.square}
       if (this.movement.from !=="" && this.movement.from !== square.square){
         this.movement.to = square.square
       }
-      if (this.movement.from !=="" && this.movement.to !==""){
+      if (this.isValidMovement()){
         this.sendMovement().then(async(result) => {
           this.movement = {from:"", to:""}
           this.loadData()
@@ -73,9 +86,6 @@ export default {
     closeWinnerModal() {
       this.modalOpened = false;
     },
-    joinAsPlayer(playerName){
-      this.$router.push({name: "Player" ,params:{gameId: this.gameId, playerId: playerName}})
-    }
   },
 }
 </script>
