@@ -1,21 +1,22 @@
 <template>
     <section class="game-board">
-        <article  v-for="square in squares" class="square" v-bind:class="square.player" :key="square.square" @click="onSquareClicked(square)">
-          {{square.soldier}}
-        </article>
+      <article  v-for="square in squares" class="square" v-bind:class="square.player" :key="square.square">
+        {{square.soldier}}
+      </article>
     </section>
+
 
     <button @click="joinAsPlayer('player_1')">Unirse como Jugador 1</button>
     <button @click="joinAsPlayer('player_2')">Unirse como Jugador 2</button>
 
     <button @click="loadData">Refrescar estado</button>
-    
+
     <WinnerModal v-show="modalOpened" :winner="winner"/>
 
 </template>
 
 <script>
-import {getGameState, putGameMovement, getPlayerTurn} from '@/services/api.js';
+import {getGameState, getPlayerTurn} from '@/services/api.js';
 import WinnerModal from '@/components/WinnerModal.vue';
 
 export default {
@@ -46,26 +47,7 @@ export default {
           this.openWinnerModal()
         }
     },
-    async sendMovement() {
-      
-      await putGameMovement(this.movement, this.gameId)
-
-    }, 
-    async onSquareClicked(square){
-      if (square.soldier !==null && square.player === this.activePlayer){
-        this.movement.from = square.square}
-      if (this.movement.from !=="" && this.movement.from !== square.square){
-        this.movement.to = square.square
-      }
-      if (this.movement.from !=="" && this.movement.to !==""){
-        this.sendMovement().then(async(result) => {
-          this.movement = {from:"", to:""}
-          this.loadData()
-        
-          return result
-        })
-      }
-    },
+    
     openWinnerModal() {
       this.modalOpened = true;
       console.log("click modal" + this.modalOpened);
@@ -81,11 +63,16 @@ export default {
 </script>
 
 <style>
+
+    button {
+      margin: 1em
+    }
     .game-board {
         display: grid;
         grid-template-rows: 5em 5em 5em 5em 5em;
         grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em 5em;
-        margin: 5em
+        margin: 5em;
+        justify-content: center;
     }
     .square {
       border: 1px solid black;
