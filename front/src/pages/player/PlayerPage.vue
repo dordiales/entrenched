@@ -24,7 +24,7 @@ export default {
     return {
       activePlayer: "player_1",
       user: this.$route.params.playerId,
-      player: "",
+      player: this.$route.params.playerId,
       squares: [],
       movement: {from:"", to:""},
       winner: "",
@@ -65,7 +65,7 @@ export default {
           }
       },
     async onSquareClicked(square){
-      if (square.soldier !==null && square.player === this.activePlayer){
+      if (square.soldier !==null && square.player === this.activePlayer && square.player === this.player){
         this.movement.from = square.square}
       if (this.movement.from !=="" && this.movement.from !== square.square){
         this.movement.to = square.square
