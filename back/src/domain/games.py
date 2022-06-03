@@ -2,15 +2,21 @@ import sqlite3
 
 
 class Game:
-    def __init__(self, id, active_player="player_1"):
+    def __init__(self, id, active_player="player_1", player_1=None, player_2=None):
         self.id = id
         self.active_player = active_player
+        self.player_1 = player_1
+        self.player_2 = player_2
 
     def to_dict(self):
         return {"id": self.id, "active_player": self.active_player}
 
     def state(self):
-        return {"active_player": self.active_player}
+        return {
+            "active_player": self.active_player,
+            "player_1": self.player_1,
+            "player_2": self.player_2,
+        }
 
 
 class GamesRepository:
@@ -27,7 +33,9 @@ class GamesRepository:
         sql = """
             CREATE TABLE IF NOT EXISTS games (
                 id VARCHAR PRIMARY KEY,
-                active_player VARCHAR
+                active_player VARCHAR,
+                player_1 Varchar,
+                player_2 Varchar
             )
         """
         conn = self.create_conn()
@@ -52,9 +60,20 @@ class GamesRepository:
         data = cursor.fetchone()
         if data is None:
             return None
-
+        print(data["player_1"], data["player_2"])
         game = Game(**data)
         return game
+
+    def join(self, game_id, player_dict):
+        player = player_dict["player"]
+        user_name = player_dict["name"]
+        sql = f"""UPDATE games SET {player} = :name
+                WHERE id = :id AND {player} is NULL"""
+        print(sql)
+        conn = self.create_conn()
+        cursor = conn.cursor()
+        cursor.execute(sql, {"name": user_name, "id": game_id})
+        conn.commit()
 
     def alternate_active_player(self, gameId):
         game_state = self.get_game(gameId)

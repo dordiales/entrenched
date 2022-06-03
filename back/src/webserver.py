@@ -42,6 +42,12 @@ def create_app(repositories):
         game_state = game.state()
         return jsonify(game_state)
 
+    @app.route("/api/games/<id>", methods=["PUT"])
+    def joining_player(id):
+        body = request.json
+        repositories["games"].join(id, body)
+        return f"{body['player']} joined the game", 200
+
     @app.route("/api/games", methods=["POST"])
     def create_new_game():
         body = request.json

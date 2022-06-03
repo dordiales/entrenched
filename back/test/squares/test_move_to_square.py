@@ -177,18 +177,18 @@ def test_active_player_should_alternate_after_succesfull_movement():
 
     game_state = client.get("/api/games/01")
 
-    assert game_state.json == {"active_player": "player_2"}
+    assert game_state.json["active_player"] == "player_2"
 
 
 def test_active_player_should_not_alternate_after_unsuccesfull_movement():
     client = setup()
 
     movement = {"from": "A1", "to": "B2", "gameId": "01"}
-    initial_game_state = {"active_player": "player_1"}
+    initial_player_turn = "player_1"
 
     put_response = client.put("api/board/01", json=movement)
     assert put_response.status_code == 403
 
     final_game_state = client.get("/api/games/01")
 
-    assert final_game_state.json == initial_game_state
+    assert final_game_state.json["active_player"] == initial_player_turn

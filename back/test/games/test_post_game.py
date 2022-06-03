@@ -28,7 +28,11 @@ def test_api_should_create_new_game():
 
     get_response = client.get("/api/games/01")
 
-    assert get_response.json == {"active_player": "player_1"}
+    assert get_response.json == {
+        "active_player": "player_1",
+        "player_1": None,
+        "player_2": None,
+    }
 
 
 def test_api_should_create_new_board_when_starting_new_game():
