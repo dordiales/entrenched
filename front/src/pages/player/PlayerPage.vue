@@ -121,7 +121,8 @@ export default {
         display: grid;
         grid-template-rows: 5em 5em 5em 5em 5em;
         grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em 5em;
-        margin: 5em
+        margin: 5em;
+        justify-content: center;
     }
     .square {
       border: 1px solid black;
