@@ -34,6 +34,7 @@ export default {
   },
   mounted() {
     this.loadData();
+    this.refreshData();
   },
   computed:{
       
@@ -54,6 +55,11 @@ export default {
           this.winner = winner_player
           this.openWinnerModal()
         }
+    },
+    async refreshData() {
+      window.setInterval(() => {
+       this.loadData()
+    }, 5000);
     },
     async sendMovement() {
       

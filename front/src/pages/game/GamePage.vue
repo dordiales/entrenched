@@ -42,8 +42,10 @@ export default {
   },
   mounted() {
     this.loadData();
+    this.refreshData();
   },
   methods: {
+
     async loadData() {
       this.squares = await getGameSquares(this.gameId)
       let gameState = await getGameState(this.gameId)
@@ -59,6 +61,12 @@ export default {
           this.winner = winner_player
           this.openWinnerModal()
         }
+    },
+
+    async refreshData() {
+      window.setInterval(() => {
+       this.loadData()
+    }, 5000);
     },
     
     openWinnerModal() {
