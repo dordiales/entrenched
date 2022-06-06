@@ -5,9 +5,6 @@
         </article>
     </section>
 
-    <h3>Debug</h3>
-    <p>Jugador: {{activePlayer}} Movimiento:{{movement}} Ganador: {{winner}}</p>
-    
     <WinnerModal v-show="modalOpened" :winner="winner"/>
 
 </template>

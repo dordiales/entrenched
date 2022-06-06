@@ -12,8 +12,6 @@
     <button v-if="player2 === null" @click="joinAsPlayer('player_2')">Unirse como Jugador 2</button>
     <button v-else disabled>Unirse como Jugador 2</button>
 
-    <p>Player1: {{player1}} Player2: {{player2}}</p>
-
     <WinnerModal v-show="modalOpened" :winner="winner"/>
 
     
