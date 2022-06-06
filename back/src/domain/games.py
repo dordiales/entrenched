@@ -60,7 +60,6 @@ class GamesRepository:
         data = cursor.fetchone()
         if data is None:
             return None
-        print(data["player_1"], data["player_2"])
         game = Game(**data)
         return game
 
