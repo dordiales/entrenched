@@ -5,8 +5,6 @@
         </article>
     </section>
 
-    <button @click="loadData">Refrescar estado</button>
-
     <h3>Debug</h3>
     <p>Jugador: {{activePlayer}} Movimiento:{{movement}} Ganador: {{winner}}</p>
     
