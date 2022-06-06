@@ -1,9 +1,11 @@
 <template>
+
     <section class="game-board">
       <article  v-for="square in squares" class="square" v-bind:class="square.player" :key="square.square">
         <img :src="getSoldierIcon(square)" :alt="square.player + '-' + square.soldier" v-if="square.soldier !=undefined">
       </article>
     </section>
+
 
 
     <button class="button-player1" v-if="player1 === null" @click="joinAsPlayer('player_1')">Unirse como Jugador 1</button>
@@ -112,11 +114,13 @@ export default {
         display: grid;
         grid-template-rows: 5em 5em 5em 5em 5em;
         grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em 5em;
-        margin: 5em;
+        margin: 5em auto;
         justify-content: center;
+        border: 3px solid rgb(153, 58, 35);
+        width: fit-content;
     }
     .square {
-      border: 1px solid black;
+      border: 1px dashed rgb(153, 58, 35);
       background-color: beige;
 
     }

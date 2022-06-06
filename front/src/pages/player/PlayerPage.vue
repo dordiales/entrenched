@@ -118,11 +118,13 @@ export default {
         display: grid;
         grid-template-rows: 5em 5em 5em 5em 5em;
         grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em 5em;
-        margin: 5em;
+        margin: 5em auto;
         justify-content: center;
+        border: 3px solid rgb(153, 58, 35);
+        width: fit-content;
     }
     .square {
-      border: 1px solid black;
+      border: 1px dashed rgb(153, 58, 35);
       background-color: beige;
 
     }
