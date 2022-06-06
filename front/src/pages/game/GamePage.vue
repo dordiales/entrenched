@@ -6,11 +6,11 @@
     </section>
 
 
-    <button v-if="player1 === null" @click="joinAsPlayer('player_1')">Unirse como Jugador 1</button>
-    <button v-else disabled>Unirse como Jugador 1</button>
+    <button class="button-player1" v-if="player1 === null" @click="joinAsPlayer('player_1')">Unirse como Jugador 1</button>
+    <button class="button-player1-disabled" v-else disabled>Unirse como Jugador 1</button>
 
-    <button v-if="player2 === null" @click="joinAsPlayer('player_2')">Unirse como Jugador 2</button>
-    <button v-else disabled>Unirse como Jugador 2</button>
+    <button class="button-player2" v-if="player2 === null" @click="joinAsPlayer('player_2')">Unirse como Jugador 2</button>
+    <button class="button-player2-disabled" v-else disabled>Unirse como Jugador 2</button>
 
     <WinnerModal v-show="modalOpened" :winner="winner"/>
 

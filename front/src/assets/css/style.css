@@ -18,3 +18,78 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+.button-green {
+  color: #ecf0f1;
+  font-size: 17px;
+  background-color: #556B2F;
+  border: 1px solid #98b95f;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 6px 0px #38471f;
+  transition: all .1s;
+ }
+ 
+ .button-green:active {
+  box-shadow: 0px 2px 0px #38471f;
+  position: relative;
+  top: 2px;
+ }
+
+ .button-player2 {
+  color: #ecf0f1;
+  font-size: 17px;
+  background-color: #e6a34a;
+  border: 1px solid #edba78;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 6px 0px #b47018;
+  transition: all .1s;
+ }
+
+ .button-player2-disabled {
+  color: #ecf0f1;
+  font-size: 17px;
+  background-color: #e6a34a;
+  border: 1px solid #edba78;
+  border-radius: 5px;
+  padding: 10px;
+  transition: all .1s;
+  opacity: 0.6;
+  cursor: not-allowed;
+ }
+ 
+ .button-player2:active {
+  box-shadow: 0px 2px 0px #b47018;
+  position: relative;
+  top: 2px;
+ }
+
+ .button-player1 {
+  color: #ecf0f1;
+  font-size: 17px;
+  background-color: #5a6db1;
+  border: 1px solid #8694c6;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 6px 0px #313d68;
+  transition: all .1s;
+ }
+
+ .button-player1-disabled {
+  color: #ecf0f1;
+  font-size: 17px;
+  background-color: #5a6db1;
+  border: 1px solid #8694c6;
+  border-radius: 5px;
+  padding: 10px;
+  transition: all .1s;
+  opacity: 0.6;
+  cursor: not-allowed;
+ }
+ 
+ .button-player1:active {
+  box-shadow: 0px 2px 0px #313d68;
+  position: relative;
+  top: 2px;
+ }

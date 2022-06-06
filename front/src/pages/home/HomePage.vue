@@ -4,7 +4,7 @@
     <section class="game-input">
     <p>Crea una partida o únete a una ya existente</p>
     <input type="text" v-model="gameName">
-    <button @click="onClickMoveToGame">Ir a la Partida</button>
+    <button class="button-green" @click="onClickMoveToGame">Ir a la Partida</button>
     </section>
     <footer>
       <p>Art made by cheese.sketch</p>
