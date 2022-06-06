@@ -6,6 +6,11 @@
     <input type="text" v-model="gameName">
     <button @click="onClickMoveToGame">Ir a la Partida</button>
     </section>
+    <footer>
+      <p>Art made by cheese.sketch</p>
+      <p>Instagram</p>
+      <a href="https://www.instagram.com/cheese.sketch/">@cheese.sketch</a>
+    </footer>
 </template>
 
 <script>
@@ -39,6 +44,11 @@ export default {
 <style scoped>
 h1 {
   font-style: italic;
+}
+
+footer p{
+  margin: 0.2em;
+  justify-content: center;
 }
 
 .game-input{

@@ -36,7 +36,6 @@ export default {
       gameId: this.$route.params.gameId,
       player1 :null,
       player2 :null,
-      testImage: undefined
       
     };
   },
@@ -88,7 +87,7 @@ export default {
       const iconRouter = {'player_1':{trooper:'8WtYp5E.png',
                              grenadier:'64Vdf7N.png', 
                              machinegun: 'SROxcoG.png', 
-                             hq: 'wf7jOk5.png'
+                             hq: 'gKYRMFk.png'
                             },
                    'player_2':{trooper:'sgBDzUb.png',
                              grenadier:'guKaS99.png', 
