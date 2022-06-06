@@ -1,6 +1,6 @@
 import config from "@/config.js"
 
-export async function getGameState(gameId) {
+export async function getGameSquares(gameId) {
 
   const response = await fetch(`${config.API_PATH}/board/${gameId}`);
   const squares = await response.json()
@@ -19,10 +19,10 @@ export async function putGameMovement(movement, gameId) {
   await fetch(`${config.API_PATH}/board/${gameId}`, settings);
 }
 
-export async function getPlayerTurn(gameId) {
+export async function getGameState(gameId) {
   const response = await fetch(`${config.API_PATH}/games/${gameId}`);
   const gameState = await response.json()
-  return gameState.active_player
+  return gameState
 }
 
 export async function startNewGame(gameId){
@@ -35,4 +35,15 @@ export async function startNewGame(gameId){
   }
   const response = await fetch(`${config.API_PATH}/games`,settings)
   return response
+}
+
+export async function joinGame(playerName, gameId){
+  const settings = {
+    method: 'PUT',
+    body: JSON.stringify({'player':playerName, 'name':playerName}),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  await fetch(`${config.API_PATH}/games/${gameId}`, settings);
 }

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {getGameState, putGameMovement, getPlayerTurn} from '@/services/api.js';
+import {getGameState, putGameMovement, getGameSquares} from '@/services/api.js';
 import WinnerModal from '@/components/WinnerModal.vue';
 
 export default {
@@ -40,8 +40,11 @@ export default {
   },
   methods: {
     async loadData() {
-      this.squares = await getGameState(this.gameId)
-      this.activePlayer = await getPlayerTurn(this.gameId)
+      this.squares = await getGameSquares(this.gameId)
+  
+      let gameState = await getGameState(this.gameId)
+
+      this.activePlayer = gameState.active_player
 
 
       const hqList = this.squares.filter(e=>e.soldier == "hq")

@@ -6,17 +6,24 @@
     </section>
 
 
-    <button @click="joinAsPlayer('player_1')">Unirse como Jugador 1</button>
-    <button @click="joinAsPlayer('player_2')">Unirse como Jugador 2</button>
+    <button v-if="player1 === null" @click="joinAsPlayer('player_1')">Unirse como Jugador 1</button>
+    <button v-else disabled>Unirse como Jugador 1</button>
+
+    <button v-if="player2 === null" @click="joinAsPlayer('player_2')">Unirse como Jugador 2</button>
+    <button v-else disabled>Unirse como Jugador 2</button>
 
     <button @click="loadData">Refrescar estado</button>
 
+    <p>Player1: {{player1}} Player2: {{player2}}</p>
+
     <WinnerModal v-show="modalOpened" :winner="winner"/>
+
+    
 
 </template>
 
 <script>
-import {getGameState, getPlayerTurn} from '@/services/api.js';
+import {getGameSquares, getGameState, joinGame} from '@/services/api.js';
 import WinnerModal from '@/components/WinnerModal.vue';
 
 export default {
@@ -28,7 +35,9 @@ export default {
       movement: {from:"", to:""},
       winner: "",
       modalOpened: false,
-      gameId: this.$route.params.gameId
+      gameId: this.$route.params.gameId,
+      player1 :null,
+      player2 :null,
     };
   },
   mounted() {
@@ -36,8 +45,12 @@ export default {
   },
   methods: {
     async loadData() {
-      this.squares = await getGameState(this.gameId)
-      this.activePlayer = await getPlayerTurn(this.gameId)
+      this.squares = await getGameSquares(this.gameId)
+      let gameState = await getGameState(this.gameId)
+      this.activePlayer = gameState.active_player
+      this.player1 = gameState.player_1
+      this.player2 = gameState.player_2
+      
 
       const hqList = this.squares.filter(e=>e.soldier == "hq")
          
@@ -55,9 +68,13 @@ export default {
     closeWinnerModal() {
       this.modalOpened = false;
     },
-    joinAsPlayer(playerName){
-      this.$router.push({name: "Player" ,params:{gameId: this.gameId, playerId: playerName}})
-    }
+    async joinAsPlayer(playerName){
+      const response = await joinGame(playerName, this.gameId).then(async() => {
+          this.$router.push({name: "Player" ,params:{gameId: this.gameId, playerId: playerName}})
+        })
+        return response
+      
+    },
   },
 }
 </script>
