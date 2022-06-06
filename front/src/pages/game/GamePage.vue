@@ -1,7 +1,7 @@
 <template>
     <section class="game-board">
       <article  v-for="square in squares" class="square" v-bind:class="square.player" :key="square.square">
-        {{square.soldier}}
+        <img :src="getSoldierIcon(square)" :alt="square.player + '-' + square.soldier" v-if="square.soldier !=undefined">
       </article>
     </section>
 
@@ -36,6 +36,8 @@ export default {
       gameId: this.$route.params.gameId,
       player1 :null,
       player2 :null,
+      testImage: undefined
+      
     };
   },
   mounted() {
@@ -81,6 +83,25 @@ export default {
         return response
       
     },
+    getSoldierIcon(square){
+      const iconsRoute = 'https://i.imgur.com/'
+      const iconRouter = {'player_1':{trooper:'8WtYp5E.png',
+                             grenadier:'64Vdf7N.png', 
+                             machinegun: 'SROxcoG.png', 
+                             hq: 'wf7jOk5.png'
+                            },
+                   'player_2':{trooper:'sgBDzUb.png',
+                             grenadier:'guKaS99.png', 
+                             machinegun: 'ECbNeFH.png', 
+                             hq: 'nzf6NaJ.png'
+                            }
+                  }
+      const iconPlayer = square.player
+      const iconSoldier = square.soldier
+      const soldierIconRoute = iconsRoute + iconRouter[iconPlayer][iconSoldier]
+      return soldierIconRoute
+      
+    }
   },
 }
 </script>
@@ -101,6 +122,11 @@ export default {
       border: 1px solid black;
       background-color: beige;
 
+    }
+    .square img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
     }
     .player_1 {
       color: #5a6db1;
