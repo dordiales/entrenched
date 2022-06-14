@@ -5,6 +5,14 @@
         </article>
     </section>
 
+    <section class="control-panel">
+      <ul >
+        <li :class="player">Comandando a los soldados {{selectedTeam}}</li>
+        <li>Es el turno del comandante {{commanderTrun}}</li>
+        <li><button class="button-green">Abandonar partida</button></li>
+      </ul>
+    </section>
+
     <WinnerModal v-show="modalOpened" :winner="winner"/>
 
 </template>
@@ -32,6 +40,20 @@ export default {
     this.refreshData();
   },
   computed:{
+    selectedTeam (){
+      if (this.player === "player_1"){
+        return "ingleses"
+      } else {
+        return "alemanes"
+      }
+    },
+    commanderTrun (){
+      if (this.activePlayer === "player_1"){
+        return "inglés"
+      } else {
+        return "alemán"
+      } 
+    },
       
   },
   methods: {
@@ -113,30 +135,51 @@ export default {
 }
 </script>
 
-<style>
-    .game-board {
-        display: grid;
-        grid-template-rows: 5em 5em 5em 5em 5em;
-        grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em 5em;
-        margin: 5em auto;
-        justify-content: center;
-        border: 3px solid rgb(153, 58, 35);
-        width: fit-content;
-    }
-    .square {
-      border: 1px dashed rgb(153, 58, 35);
-      background-color: beige;
+<style scoped>
+  .game-board {
+      display: grid;
+      grid-template-rows: 5em 5em 5em 5em 5em;
+      grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em 5em;
+      margin: 5em auto;
+      justify-content: center;
+      border: 3px solid rgb(153, 58, 35);
+      width: fit-content;
+  }
+  .square {
+    border: 1px dashed rgb(153, 58, 35);
+    background-color: beige;
 
-    }
-    .square img {
-      height: 100%;
-      width: 100%;
-      object-fit: contain;
-    }
-    .player_1 {
-      color: #5a6db1;
-    }
-    .player_2 {
-      color: #b37c34;
-    }
+  }
+  .square img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+  .control-panel{
+    font-size: 1.5rem;
+    font-weight: bolder;
+    border: 4px inset #3e4e22;
+    display: grid;
+    grid-template-columns: 1fr;
+    box-shadow: 0px 6px 0px #58732a;
+    background-color: #58732a;
+    margin: 0 auto;
+    width: 60vw;
+  }
+  .control-panel ul {
+    list-style: none;
+    margin: 1em 0;
+    padding: 0;
+
+  }
+  .control-panel ul .player_2 {
+    color: #5a6db1;
+  }
+  .control-panel ul .player_1 {
+    color: #b37c34;
+  }
+  .control-panel ul li{
+    margin: 1em 0;
+    color: whitesmoke;
+  }
 </style>
