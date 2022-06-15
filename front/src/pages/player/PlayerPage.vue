@@ -1,6 +1,6 @@
 <template>
     <section class="game-board">
-        <article  v-for="square in squares" class="square" v-bind:class="square.player" :key="square.square" @click="onSquareClicked(square)">
+        <article  v-for="square in squares" class="square" :class="square.player" :style="isAdyacent(square)" :key="square.square" @click="onSquareClicked(square)">
           <img :src="getSoldierIcon(square)" :alt="square.player + '-' + square.soldier" v-if="square.soldier !=undefined">
         </article>
     </section>
@@ -36,7 +36,54 @@ export default {
       winner: "",
       modalOpened: false,
       rulesOpened: false,
-      gameId: this.$route.params.gameId
+      gameId: this.$route.params.gameId,
+      adjacentSquaresDict : {
+            "A1": ["B1", "A2"],
+            "A2": ["A1", "B2", "A3"],
+            "A3": ["A2", "B3", "A4"],
+            "A4": ["A3", "B4", "A5"],
+            "A5": ["A4", "B5", "A6"],
+            "A6": ["A5", "B6", "A7"],
+            "A7": ["A6", "B7", "A8"],
+            "A8": ["A7", "B8", "A9"],
+            "A9": ["A8", "B9"],
+            "B1": ["C1", "B2", "A1"],
+            "B2": ["B1", "C2", "B3", "A2"],
+            "B3": ["B2", "C3", "B4", "A3"],
+            "B4": ["B3", "C4", "B5", "A4"],
+            "B5": ["B4", "C5", "B6", "A5"],
+            "B6": ["B5", "C6", "B7", "A6"],
+            "B7": ["B6", "C7", "B8", "A7"],
+            "B8": ["B7", "C8", "B9", "A8"],
+            "B9": ["B8", "C9", "A9"],
+            "C1": ["D1", "C2", "B1"],
+            "C2": ["C1", "D2", "C3", "B2"],
+            "C3": ["C2", "D3", "C4", "B3"],
+            "C4": ["C3", "D4", "C5", "B4"],
+            "C5": ["C4", "D5", "C6", "B5"],
+            "C6": ["C5", "D6", "C7", "B6"],
+            "C7": ["C6", "D7", "C8", "B7"],
+            "C8": ["C7", "D8", "C9", "B8"],
+            "C9": ["C8", "D9", "B9"],
+            "D1": ["E1", "D2", "C1"],
+            "D2": ["D1", "E2", "D3", "C2"],
+            "D3": ["D2", "E3", "D4", "C3"],
+            "D4": ["D3", "E4", "D5", "C4"],
+            "D5": ["D4", "E5", "D6", "C5"],
+            "D6": ["D5", "E6", "D7", "C6"],
+            "D7": ["D6", "E7", "D8", "C7"],
+            "D8": ["D7", "E8", "D9", "C8"],
+            "D9": ["D8", "E9", "C9"],
+            "E1": ["E2", "D1"],
+            "E2": ["E1", "E3", "D2"],
+            "E3": ["E2", "E4", "D3"],
+            "E4": ["E3", "E5", "D4"],
+            "E5": ["E4", "E6", "D5"],
+            "E6": ["E5", "E7", "D6"],
+            "E7": ["E6", "E8", "D7"],
+            "E8": ["E7", "E9", "D8"],
+            "E9": ["E8", "D9"],
+        },
     };
   },
   mounted() {
@@ -95,6 +142,9 @@ export default {
           }
       },
     async onSquareClicked(square){
+      if (square.soldier == 'hq'){
+        return ''
+      }
       if (square.soldier !==null && square.player === this.activePlayer && square.player === this.player){
         this.movement.from = square.square}
       if (this.movement.from !=="" && this.movement.from !== square.square){
@@ -138,6 +188,26 @@ export default {
       const iconSoldier = square.soldier
       const soldierIconRoute = iconsRoute + iconRouter[iconPlayer][iconSoldier]
       return soldierIconRoute
+      
+    },
+    isAdyacent(square){
+      if (this.movement.from == ""){
+        return {}
+      }
+      if (square.player == this.player){
+        return {}
+      }
+      let adyacentSquares = this.adjacentSquaresDict[this.movement.from]
+      if (adyacentSquares.includes(square.square)){
+        if (square.player != this.player && square.player != null){
+          return {backgroundColor: 'darkorange'}
+        } else {
+          return {backgroundColor: 'darkcyan'}
+        }
+        
+      } else {
+        return {}
+      }
       
     }
   },
