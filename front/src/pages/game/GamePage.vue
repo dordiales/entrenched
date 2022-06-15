@@ -1,5 +1,7 @@
 <template>
 
+    <h3>Es el turno del comandante {{commanderTrun}}</h3>
+
     <section class="game-board">
       <article  v-for="square in squares" class="square" v-bind:class="square.player" :key="square.square">
         <img :src="getSoldierIcon(square)" :alt="square.player + '-' + square.soldier" v-if="square.soldier !=undefined">
@@ -38,6 +40,16 @@ export default {
       player2 :null,
       
     };
+  },
+  computed: {
+    commanderTrun (){
+      if (this.activePlayer === "player_1"){
+        return "inglés"
+      } else {
+        return "alemán"
+      } 
+    },
+
   },
   mounted() {
     this.loadData();
@@ -110,11 +122,14 @@ export default {
     button {
       margin: 1em
     }
+    h3{
+      margin-top: 5em;
+    }
     .game-board {
         display: grid;
         grid-template-rows: 5em 5em 5em 5em 5em;
         grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em 5em;
-        margin: 5em auto;
+        margin: 2em auto;
         justify-content: center;
         border: 3px solid rgb(153, 58, 35);
         width: fit-content;

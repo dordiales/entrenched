@@ -46,7 +46,7 @@ export default {
 
 <style scoped>
 h1 {
-  font-style: italic;
+  font-size: 6em;
 }
 footer {
   margin-top: 2em;

@@ -174,9 +174,19 @@ export default {
   }
   .control-panel ul .player_2 {
     color: #5a6db1;
+    background: white;
+    width: fit-content;
+    margin: auto;
+    padding: 0em 1em;
+    border: 4px inset #3e4e22;
   }
   .control-panel ul .player_1 {
     color: #b37c34;
+    background: white;
+    width: fit-content;
+    margin: auto;
+    padding: 0em 1em;
+    border: 4px inset #3e4e22;
   }
   .control-panel ul li{
     margin: 1em 0;
