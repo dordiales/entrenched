@@ -17,6 +17,7 @@
   padding: 10px;
   box-shadow: 0px 6px 0px #38471f;
   transition: all .1s;
+  cursor: pointer;
  }
  
  .button-green:active {
@@ -36,6 +37,7 @@
   padding: 10px;
   box-shadow: 0px 6px 0px #b47018;
   transition: all .1s;
+  cursor: pointer;
  }
 
  .button-player1-disabled {
@@ -69,6 +71,7 @@
   padding: 10px;
   box-shadow: 0px 6px 0px #313d68;
   transition: all .1s;
+  cursor: pointer;
  }
 
  .button-player2-disabled {

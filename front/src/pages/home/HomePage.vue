@@ -2,10 +2,13 @@
 
     <h1>ENTRENCHED</h1>
     <section class="game-input">
-    <h3>Crea una partida o únete a una ya existente</h3>
-    <input type="text" v-model="gameName" @keyup.enter="onClickMoveToGame">
-    <button class="button-green" @click="onClickMoveToGame">Ir a la Partida</button>
+      <h3>Crea una partida o únete a una ya existente</h3>
+      <input type="text" v-model="gameName" @keyup.enter="onClickMoveToGame">
+      <button class="button-green" @click="onClickMoveToGame">Ir a la Partida</button>
     </section>
+
+    <router-link class="info" to="/info">+Info</router-link>
+
     <footer>
       <p>Art made by cheese.sketch</p>
       <p>Instagram</p>
@@ -51,6 +54,13 @@ footer {
 footer p{
   margin: 0.2em;
   justify-content: center;
+}
+
+.info {
+  display: block;
+  margin: auto;
+  margin-top: 1em;
+  width: fit-content;
 }
 
 .game-input{
