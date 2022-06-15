@@ -25,7 +25,7 @@
   top: 2px;
  }
 
- .button-player2 {
+ .button-player1 {
   color: #ecf0f1;
   font-size: 17px;
   font-weight: bold;
@@ -38,7 +38,7 @@
   transition: all .1s;
  }
 
- .button-player2-disabled {
+ .button-player1-disabled {
   color: #ecf0f1;
   font-size: 17px;
   font-family:courier, courier new, Arial, sans-serif;
@@ -52,13 +52,13 @@
   cursor: not-allowed;
  }
  
- .button-player2:active {
+ .button-player1:active {
   box-shadow: 0px 2px 0px #b47018;
   position: relative;
   top: 2px;
  }
 
- .button-player1 {
+ .button-player2 {
   color: #ecf0f1;
   font-size: 17px;
   font-weight: bold;
@@ -71,7 +71,7 @@
   transition: all .1s;
  }
 
- .button-player1-disabled {
+ .button-player2-disabled {
   color: #ecf0f1;
   font-size: 17px;
   font-weight: bold;
@@ -85,7 +85,7 @@
   cursor: not-allowed;
  }
  
- .button-player1:active {
+ .button-player2:active {
   box-shadow: 0px 2px 0px #313d68;
   position: relative;
   top: 2px;
