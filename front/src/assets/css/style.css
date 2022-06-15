@@ -26,6 +26,26 @@
   top: 2px;
  }
 
+ .button-red {
+  color: #ecf0f1;
+  font-family:courier, courier new, Arial, sans-serif;
+  font-size: 17px;
+  font-weight: bold;
+  background-color: #b50000;
+  border: 1px solid #fd0000;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 6px 0px #750000;
+  transition: all .1s;
+  cursor: pointer;
+ }
+ 
+ .button-red:active {
+  box-shadow: 0px 2px 0px #750000;
+  position: relative;
+  top: 2px;
+ }
+
  .button-player1 {
   color: #ecf0f1;
   font-size: 17px;

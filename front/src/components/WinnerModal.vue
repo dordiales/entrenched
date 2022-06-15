@@ -59,7 +59,9 @@ article{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgb(77, 91, 106);
+    border: 4px inset #3e4e22;
+    box-shadow: 0px 6px 0px #58732a;
+    background-color: #58732a;
     padding: 1em 1em 3em;
     color:#fae8b9;
 }

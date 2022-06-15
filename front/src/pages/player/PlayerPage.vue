@@ -9,20 +9,23 @@
       <ul >
         <li :class="player">Comandando a los soldados {{selectedTeam}}</li>
         <li>Es el turno del comandante {{commanderTrun}}</li>
-        <li><button class="button-green">Abandonar partida</button></li>
+        <li><button class="button-green" @click="openRulesModal">Reglas</button></li>
+        <li><button class="button-red">Abandonar partida</button></li>
       </ul>
     </section>
 
     <WinnerModal v-show="modalOpened" :winner="winner"/>
+    <RulesModal v-show="rulesOpened" @closeRules="closeRulesModal"/>
 
 </template>
 
 <script>
 import {getGameState, putGameMovement, getGameSquares} from '@/services/api.js';
 import WinnerModal from '@/components/WinnerModal.vue';
+import RulesModal from './RulesModal.vue'
 
 export default {
-    components: {WinnerModal},
+    components: {WinnerModal, RulesModal},
     data() {
     return {
       activePlayer: "player_1",
@@ -32,6 +35,7 @@ export default {
       movement: {from:"", to:""},
       winner: "",
       modalOpened: false,
+      rulesOpened: false,
       gameId: this.$route.params.gameId
     };
   },
@@ -107,10 +111,15 @@ export default {
     },
     openWinnerModal() {
       this.modalOpened = true;
-      console.log("click modal" + this.modalOpened);
     },
     closeWinnerModal() {
       this.modalOpened = false;
+    },
+    openRulesModal(){
+      this.rulesOpened = true;
+    },
+    closeRulesModal(){
+      this.rulesOpened = false;
     },
     getSoldierIcon(square){
       const iconsRoute = 'https://i.imgur.com/'
