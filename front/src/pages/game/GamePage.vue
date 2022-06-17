@@ -85,7 +85,7 @@ export default {
         } else {
           this.loadData()
         }
-      }, 5000);
+      }, 500);
     },
     
     openWinnerModal() {

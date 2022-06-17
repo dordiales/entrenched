@@ -10,7 +10,7 @@
         <li :class="player">Comandando a los soldados {{selectedTeam}}</li>
         <li>Es el turno del comandante {{commanderTrun}}</li>
         <li><button class="button-green" @click="openRulesModal">Reglas</button></li>
-        <li><button class="button-red">Abandonar partida</button></li>
+        <li><button class="button-red" @click="exitGame">Abandonar partida</button></li>
       </ul>
     </section>
 
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import {getGameState, putGameMovement, getGameSquares} from '@/services/api.js';
+import {getGameState, putGameMovement, getGameSquares, exitGame} from '@/services/api.js';
 import WinnerModal from '@/components/WinnerModal.vue';
 import RulesModal from './RulesModal.vue'
 
@@ -132,7 +132,7 @@ export default {
         } else {
           this.loadData()
         }
-      }, 5000);
+      }, 500);
     },
     async sendMovement() {
       
@@ -215,8 +215,17 @@ export default {
       }
       
     },
-    finishGame(){
-      this.$router.push({name: "Home"})
+    async exitGame(){
+      const response = await exitGame(this.player, this.gameId).then(async() => {
+          this.$router.push({name: "Game" ,params:{gameId: this.gameId}})
+        })
+        return response
+    },
+    async finishGame(){
+      const response = await exitGame(this.player, this.gameId).then(async() => {
+          this.$router.push({name: "Home"})
+        })
+        return response
     }
   },
 }

@@ -40,7 +40,18 @@ export async function startNewGame(gameId){
 export async function joinGame(playerName, gameId){
   const settings = {
     method: 'PUT',
-    body: JSON.stringify({'player':playerName, 'name':playerName}),
+    body: JSON.stringify({'action':'join','player':playerName, 'name':playerName}),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  await fetch(`${config.API_PATH}/games/${gameId}`, settings);
+}
+
+export async function exitGame(playerName, gameId){
+  const settings = {
+    method: 'PUT',
+    body: JSON.stringify({'action':'exit','player':playerName, 'name':playerName}),
     headers: {
       "Content-Type": "application/json",
     },
