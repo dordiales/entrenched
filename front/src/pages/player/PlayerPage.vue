@@ -125,9 +125,14 @@ export default {
         }
     },
     async refreshData() {
-      window.setInterval(() => {
-       this.loadData()
-    }, 5000);
+      const dataRefresh = window.setInterval(() => {
+        const onCreationRoute = this.gameId
+        if (this.$route.params.gameId != onCreationRoute){
+          window.clearInterval(dataRefresh)
+        } else {
+          this.loadData()
+        }
+      }, 5000);
     },
     async sendMovement() {
       
