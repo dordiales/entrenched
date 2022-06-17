@@ -1,6 +1,11 @@
 <template>
-    <section class="game-board">
+    <section class="game-board" v-if="player === 'player_2'">
         <article  v-for="square in squares" class="square" :class="square.player" :style="isAdyacent(square)" :key="square.square" @click="onSquareClicked(square)">
+          <img :src="getSoldierIcon(square)" :alt="square.player + '-' + square.soldier" v-if="square.soldier !=undefined">
+        </article>
+    </section>
+    <section class="game-board" v-else>
+        <article  v-for="square in squares.slice().reverse()" class="square" :class="square.player" :style="isAdyacent(square)" :key="square.square" @click="onSquareClicked(square)">
           <img :src="getSoldierIcon(square)" :alt="square.player + '-' + square.soldier" v-if="square.soldier !=undefined">
         </article>
     </section>
