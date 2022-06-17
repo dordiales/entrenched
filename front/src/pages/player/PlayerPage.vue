@@ -14,7 +14,7 @@
       </ul>
     </section>
 
-    <WinnerModal v-show="modalOpened" :winner="winner"/>
+    <WinnerModal v-show="modalOpened" :winner="winner" @finish="finishGame"/>
     <RulesModal v-show="rulesOpened" @closeRules="closeRulesModal"/>
 
 </template>
@@ -209,6 +209,9 @@ export default {
         return {}
       }
       
+    },
+    finishGame(){
+      this.$router.push({name: "Home"})
     }
   },
 }

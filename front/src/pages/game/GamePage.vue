@@ -19,7 +19,7 @@
     <router-link to="/"><button class="button-green">Volver a seleccion de partida</button></router-link>
     
 
-    <WinnerModal v-show="modalOpened" :winner="winner"/>
+    <WinnerModal v-show="modalOpened" :winner="winner" @finish="finishGame"/>
 
     
 
@@ -85,7 +85,6 @@ export default {
     
     openWinnerModal() {
       this.modalOpened = true;
-      console.log("click modal" + this.modalOpened);
     },
     closeWinnerModal() {
       this.modalOpened = false;
@@ -115,6 +114,9 @@ export default {
       const soldierIconRoute = iconsRoute + iconRouter[iconPlayer][iconSoldier]
       return soldierIconRoute
       
+    },
+    finishGame(){
+      this.$router.push({name: "Home"})
     }
   },
 }

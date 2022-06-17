@@ -4,6 +4,7 @@
       <article>
           <h1>{{winner}}</h1>
           <p>gana la partida</p>
+          <button class="button-red" @click="playerFinished">Finalizar partida</button>
       </article>
 
   </div>
@@ -22,9 +23,10 @@ export default {
             required: true
         }
     },
+    emits: ['finish'],
     methods: {
-    modalClose(){
-      this.$emit("closeModal")
+    playerFinished(){
+      this.$emit("finish")
 
     },
   },
@@ -38,6 +40,10 @@ export default {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+button{
+    padding: 0.5em;
 }
 
 .modal-wrapper{
