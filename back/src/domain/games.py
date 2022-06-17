@@ -68,10 +68,18 @@ class GamesRepository:
         user_name = player_dict["name"]
         sql = f"""UPDATE games SET {player} = :name
                 WHERE id = :id AND {player} is NULL"""
-        print(sql)
         conn = self.create_conn()
         cursor = conn.cursor()
         cursor.execute(sql, {"name": user_name, "id": game_id})
+        conn.commit()
+
+    def exit_game(self, game_id, player_dict):
+        player = player_dict["player"]
+        sql = f"""UPDATE games SET {player} = null
+                WHERE id = :id"""
+        conn = self.create_conn()
+        cursor = conn.cursor()
+        cursor.execute(sql, {"id": game_id})
         conn.commit()
 
     def alternate_active_player(self, gameId):

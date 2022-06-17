@@ -20,7 +20,7 @@ def setup():
 
 def test_api_should_save_the_players_that_joined_a_game():
     client = setup()
-    join_player_1 = {"player": "player_1", "name": "paco"}
+    join_player_1 = {"action": "join", "player": "player_1", "name": "paco"}
 
     first_put_response = client.put("/api/games/01", json=join_player_1)
     assert first_put_response.status_code == 200
@@ -33,7 +33,7 @@ def test_api_should_save_the_players_that_joined_a_game():
         "player_2": None,
     }
 
-    join_player_2 = {"player": "player_2", "name": "paca"}
+    join_player_2 = {"action": "join", "player": "player_2", "name": "paca"}
 
     second_put_response = client.put("/api/games/01", json=join_player_2)
     assert second_put_response.status_code == 200
@@ -44,4 +44,38 @@ def test_api_should_save_the_players_that_joined_a_game():
         "active_player": "player_1",
         "player_1": "paco",
         "player_2": "paca",
+    }
+
+
+def test_api_should_set_to_null_the_players_that_exit_a_game():
+    client = setup()
+    join_player_1 = {"action": "join", "player": "player_1", "name": "paco"}
+    client.put("/api/games/01", json=join_player_1)
+    join_player_2 = {"action": "join", "player": "player_2", "name": "paca"}
+    client.put("/api/games/01", json=join_player_2)
+
+    exit_player_1 = {"action": "exit", "player": "player_1", "name": "paco"}
+
+    first_put_response = client.put("/api/games/01", json=exit_player_1)
+    assert first_put_response.status_code == 200
+
+    first_response = client.get("/api/games/01")
+
+    assert first_response.json == {
+        "active_player": "player_1",
+        "player_1": None,
+        "player_2": "paca",
+    }
+
+    exit_player_2 = {"action": "exit", "player": "player_2", "name": "paca"}
+
+    second_put_response = client.put("/api/games/01", json=exit_player_2)
+    assert second_put_response.status_code == 200
+
+    second_response = client.get("/api/games/01")
+
+    assert second_response.json == {
+        "active_player": "player_1",
+        "player_1": None,
+        "player_2": None,
     }

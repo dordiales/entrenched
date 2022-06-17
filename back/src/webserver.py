@@ -43,10 +43,17 @@ def create_app(repositories):
         return jsonify(game_state)
 
     @app.route("/api/games/<id>", methods=["PUT"])
-    def joining_player(id):
+    def put_game_player(id):
         body = request.json
-        repositories["games"].join(id, body)
-        return f"{body['player']} joined the game", 200
+        if body["action"] == "join":
+            player_dict = {"player": body["player"], "name": body["name"]}
+            repositories["games"].join(id, player_dict)
+            return f"{body['player']} joined the game", 200
+
+        if body["action"] == "exit":
+            player_dict = {"player": body["player"], "name": body["name"]}
+            repositories["games"].exit_game(id, player_dict)
+            return f"{body['player']} exit the game", 200
 
     @app.route("/api/games", methods=["POST"])
     def create_new_game():
