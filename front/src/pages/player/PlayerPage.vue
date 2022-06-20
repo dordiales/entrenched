@@ -130,10 +130,10 @@ export default {
         }
     },
     async refreshData() {
-      const dataRefresh = window.setInterval(() => {
-        const onCreationRoute = this.gameId
-        if (this.$route.params.gameId != onCreationRoute){
-          window.clearInterval(dataRefresh)
+      const playerDataRefresh = window.setInterval(() => {
+        const onCreationRoute = this.player
+        if (this.$route.params.playerId != onCreationRoute){
+          window.clearInterval(playerDataRefresh)
         } else {
           this.loadData()
         }

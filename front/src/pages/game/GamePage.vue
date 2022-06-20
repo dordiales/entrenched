@@ -85,7 +85,7 @@ export default {
         } else {
           this.loadData()
         }
-      }, 500);
+      }, 5000);
     },
     
     openWinnerModal() {
@@ -95,10 +95,11 @@ export default {
       this.modalOpened = false;
     },
     async joinAsPlayer(playerName){
-      const response = await joinGame(playerName, this.gameId).then(async() => {
-          this.$router.push({name: "Player" ,params:{gameId: this.gameId, playerId: playerName}})
-        })
-        return response
+      const response = await joinGame(playerName, this.gameId)
+      if (response.ok){
+      this.$router.push({name: "Player" ,params:{gameId: this.gameId, playerId: playerName}})
+      }
+      return response
       
     },
     getSoldierIcon(square){

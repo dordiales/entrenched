@@ -45,7 +45,8 @@ export async function joinGame(playerName, gameId){
       "Content-Type": "application/json",
     },
   }
-  await fetch(`${config.API_PATH}/games/${gameId}`, settings);
+  let response=await fetch(`${config.API_PATH}/games/${gameId}`, settings);
+  return response
 }
 
 export async function exitGame(playerName, gameId){
