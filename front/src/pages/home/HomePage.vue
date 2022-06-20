@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     async onClickMoveToGame(){
-      console.log(this.gameName)
       const response = await startNewGame(this.gameName).then(async() => {
           this.$router.push(`/game/${this.gameName}`)
         })
