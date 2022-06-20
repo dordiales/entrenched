@@ -93,3 +93,19 @@ def test_api_should_create_new_board_when_starting_new_game():
         {"square": "E8", "soldier": "grenadier", "player": "player_2"},
         {"square": "E9", "soldier": "trooper", "player": "player_2"},
     ]
+
+
+def test_api_should_return_409_conflict_if_trying_to_create_an_already_existing_game():
+    client = setup()
+
+    new_game = {"gameId": "01"}
+
+    post_response = client.post("/api/games", json=new_game)
+
+    assert post_response.status_code == 201
+
+    duplicate_game = {"gameId": "01"}
+
+    error_response = client.post("/api/games", json=duplicate_game)
+
+    assert error_response.status_code == 409

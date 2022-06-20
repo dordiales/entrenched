@@ -38,9 +38,12 @@ def create_app(repositories):
 
     @app.route("/api/games/<id>", methods=["GET"])
     def get_game_current_state(id):
-        game = repositories["games"].get_game(id)
-        game_state = game.state()
-        return jsonify(game_state)
+        try:
+            game = repositories["games"].get_game(id)
+            game_state = game.state()
+            return jsonify(game_state)
+        except:
+            return "Game not found", 404
 
     @app.route("/api/games/<id>", methods=["PUT"])
     def put_game_player(id):
@@ -64,6 +67,7 @@ def create_app(repositories):
             repositories["games"].start_game(game_id)
             repositories["squares"].start_game(game_id)
             return "Game created successfully", 201
-        return "Game already exist", 307
+        return "Game already exist", 409
+
 
     return app

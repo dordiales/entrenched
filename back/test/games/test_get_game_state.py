@@ -24,3 +24,14 @@ def test_game_state_should_return_players_of_a_game():
 
     assert response.json["player_1"] == None
     assert response.json["player_2"] == None
+
+
+def test_game_state_should_return_error_404_if_game_not_found():
+    games_repository = GamesRepository(temp_file())
+    app = create_app(repositories={"games": games_repository})
+    client = app.test_client()
+    games_repository.start_game("01")
+
+    response = client.get("/api/games/02")
+
+    assert response.status_code == 404
