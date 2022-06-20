@@ -1,4 +1,5 @@
 import sqlite3
+from src.domain.errors import SlotFullError
 
 
 class Game:
@@ -66,12 +67,16 @@ class GamesRepository:
     def join(self, game_id, player_dict):
         player = player_dict["player"]
         user_name = player_dict["name"]
-        sql = f"""UPDATE games SET {player} = :name
-                WHERE id = :id AND {player} is NULL"""
-        conn = self.create_conn()
-        cursor = conn.cursor()
-        cursor.execute(sql, {"name": user_name, "id": game_id})
-        conn.commit()
+        game_state = self.get_game(game_id).state()
+        if game_state[player] is None:
+            sql = f"""UPDATE games SET {player} = :name
+                    WHERE id = :id AND {player} is NULL"""
+            conn = self.create_conn()
+            cursor = conn.cursor()
+            cursor.execute(sql, {"name": user_name, "id": game_id})
+            conn.commit()
+        else:
+            raise SlotFullError
 
     def exit_game(self, game_id, player_dict):
         player = player_dict["player"]

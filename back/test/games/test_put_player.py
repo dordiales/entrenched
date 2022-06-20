@@ -79,3 +79,24 @@ def test_api_should_set_to_null_the_players_that_exit_a_game():
         "player_1": None,
         "player_2": None,
     }
+
+
+def test_api_should_return_409_conflict_when_trying_to_access_to_an_occupied_slot_of_a_game():
+    client = setup()
+    join_player_1 = {"action": "join", "player": "player_1", "name": "paco"}
+
+    first_put_response = client.put("/api/games/01", json=join_player_1)
+    assert first_put_response.status_code == 200
+
+    repeated_join = {"action": "join", "player": "player_1", "name": "paca"}
+
+    second_put_response = client.put("/api/games/01", json=repeated_join)
+    assert second_put_response.status_code == 409
+
+    second_response = client.get("/api/games/01")
+
+    assert second_response.json == {
+        "active_player": "player_1",
+        "player_1": "paco",
+        "player_2": None,
+    }

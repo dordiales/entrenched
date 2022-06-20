@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from src.domain.errors import SlotFullError
 
 from src.lib.utils import object_to_json
 
@@ -49,9 +50,12 @@ def create_app(repositories):
     def put_game_player(id):
         body = request.json
         if body["action"] == "join":
-            player_dict = {"player": body["player"], "name": body["name"]}
-            repositories["games"].join(id, player_dict)
-            return f"{body['player']} joined the game", 200
+            try:
+                player_dict = {"player": body["player"], "name": body["name"]}
+                repositories["games"].join(id, player_dict)
+                return f"{body['name']} joined the game", 200
+            except SlotFullError:
+                return f"{body['player']} slot already occupied", 409
 
         if body["action"] == "exit":
             player_dict = {"player": body["player"], "name": body["name"]}
@@ -68,6 +72,5 @@ def create_app(repositories):
             repositories["squares"].start_game(game_id)
             return "Game created successfully", 201
         return "Game already exist", 409
-
 
     return app
