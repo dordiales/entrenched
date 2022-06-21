@@ -1,4 +1,7 @@
 <template>
+
+    <div class="page-organizer">
+    <div class="board-wrapper">
     <section class="game-board" v-if="player === 'player_2'">
         <article  v-for="square in squares" class="square" :class="square.player" :style="isAdyacent(square)" :key="square.square" @click="onSquareClicked(square)">
           <img :src="getSoldierIcon(square)" :alt="square.player + '-' + square.soldier" v-if="square.soldier !=undefined">
@@ -9,6 +12,7 @@
           <img :src="getSoldierIcon(square)" :alt="square.player + '-' + square.soldier" v-if="square.soldier !=undefined">
         </article>
     </section>
+    </div>
 
     <section class="control-panel">
       <ul >
@@ -18,6 +22,7 @@
         <li><button class="button-red" @click="exitGame">Abandonar partida</button></li>
       </ul>
     </section>
+    </div>
 
     <WinnerModal v-show="modalOpened" :winner="winner" @finish="finishGame"/>
     <RulesModal v-show="rulesOpened" @closeRules="closeRulesModal"/>
@@ -293,4 +298,120 @@ export default {
     margin: 1em 0;
     color: whitesmoke;
   }
+@media only screen and (orientation:landscape) and (max-width:961px){
+
+      h3 {
+        height: 5vh;
+        margin-top: 0.5em;
+        margin-bottom: 1em;
+      }
+
+      .page-organizer {
+        display: grid;
+        grid-template-areas: "control-panel board";
+        grid-template-columns: 3fr 8fr;
+      }
+
+      .board-wrapper {
+        grid-area: board;
+        width: 70vw;
+        height: 80vh;
+        margin: 4% auto;
+      }
+      .game-board {
+        
+        width: 100%;
+        height: 100%;
+        margin: 0em;
+        grid-template-columns: auto auto auto auto auto auto auto auto auto;;
+        grid-template-rows: auto auto auto auto auto;
+
+      }
+      .square {
+        border: 1px dashed rgb(153, 58, 35);
+        background-color: beige;
+        min-width: 0;
+        min-height: 0;
+        object-fit: contain;
+
+
+      }
+      .square img {
+        min-width: 0;
+        min-height: 0;
+        object-fit: contain;
+      }
+      
+    }
+    .control-panel{
+      
+      grid-area: control-panel;
+      width: 75%;
+      max-height: 90;
+      margin: auto;
+      margin-top: 10%;
+      padding: 0em 1em;
+      }
+    .control-panel ul li{
+      font-size: 70%;
+    }
+
+    @media only screen and (orientation:portrait) and (max-width:450px){
+
+            h3 {
+        height: 5vh;
+        margin-top: 0.5em;
+        margin-bottom: 1em;
+      }
+
+      .page-organizer {
+        display: grid;
+        grid-template-areas: "control-panel board";
+        grid-template-columns: 3fr 8fr;
+      }
+
+      .board-wrapper {
+        grid-area: board;
+        width: 70vh;
+        height: 80vw;
+        margin: 4% auto;
+      }
+      .game-board {
+        
+        width: 100%;
+        height: 100%;
+        margin: 0em;
+        grid-template-columns: auto auto auto auto auto auto auto auto auto;;
+        grid-template-rows: auto auto auto auto auto;
+
+      }
+      .square {
+        border: 1px dashed rgb(153, 58, 35);
+        background-color: beige;
+        min-width: 0;
+        min-height: 0;
+        object-fit: contain;
+
+
+      }
+      .square img {
+        min-width: 0;
+        min-height: 0;
+        object-fit: contain;
+      }
+      
+    }
+    .control-panel{
+      
+      grid-area: control-panel;
+      width: 75%;
+      max-height: 90;
+      margin: auto;
+      margin-top: 10%;
+      padding: 0em 1em;
+      }
+    .control-panel ul li{
+      font-size: 70%;
+    }
+
 </style>

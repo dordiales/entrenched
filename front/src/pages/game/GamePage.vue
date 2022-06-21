@@ -2,14 +2,18 @@
 
     <h3>Es el turno del comandante {{commanderTrun}}</h3>
 
+    <div class="page-organizer">
+
+    <div class="board-wrapper">
     <section class="game-board">
       <article  v-for="square in squares" class="square" v-bind:class="square.player" :key="square.square">
         <img :src="getSoldierIcon(square)" :alt="square.player + '-' + square.soldier" v-if="square.soldier !=undefined">
       </article>
     </section>
+    </div>
 
 
-    <section>
+    <section class="join-buttons">
       <button class="button-player1" v-if="player1 === null" @click="joinAsPlayer('player_1')">Unirse como Jugador 1: Ingleses</button>
       <button class="button-player1-disabled" v-else disabled>Unirse como Jugador 1: Ingleses</button>
 
@@ -17,6 +21,7 @@
       <button class="button-player2-disabled" v-else disabled>Unirse como Jugador 2: Alemanes</button>
     </section>
     <router-link to="/"><button class="button-green">Volver a seleccion de partida</button></router-link>
+    </div>
     
 
     <WinnerModal v-show="modalOpened" :winner="winner" @finish="finishGame"/>
@@ -130,35 +135,146 @@ export default {
 
 <style scoped>
 
-    button {
-      margin: 1em
+  button {
+    margin: 1em
+  }
+  h3{
+    margin-top: 5em;
+  }
+  .game-board {
+      display: grid;
+      grid-template-rows: 5em 5em 5em 5em 5em;
+      grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em 5em;
+      margin: 2em auto;
+      justify-content: center;
+      border: 3px solid rgb(153, 58, 35);
+      width: fit-content;
+  }
+  .square {
+    border: 1px dashed rgb(153, 58, 35);
+    background-color: beige;
+
+  }
+  .square img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+  .player_1 {
+    color: #5a6db1;
+  }
+  .player_2 {
+    color: #b37c34;
+  }
+
+  @media only screen and (orientation:landscape) and (max-width:961px){
+
+    h3 {
+      height: 5vh;
+      margin-top: 0.5em;
+      margin-bottom: 1em;
     }
-    h3{
-      margin-top: 5em;
+
+    .page-organizer {
+      display: grid;
+      grid-template-areas: "join-buttons board"
+                            "return-button board";
+      grid-template-columns: 3fr 8fr;
+      grid-template-rows: 2fr 1fr;
+    }
+
+    .board-wrapper {
+      grid-area: board;
+      width: 70vw;
+      height: 80vh;
+      margin: 0 auto;
     }
     .game-board {
-        display: grid;
-        grid-template-rows: 5em 5em 5em 5em 5em;
-        grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em 5em;
-        margin: 2em auto;
-        justify-content: center;
-        border: 3px solid rgb(153, 58, 35);
-        width: fit-content;
+      
+      width: 100%;
+      height: 100%;
+      margin: 0em;
+      grid-template-columns: auto auto auto auto auto auto auto auto auto;;
+      grid-template-rows: auto auto auto auto auto;
+
     }
     .square {
       border: 1px dashed rgb(153, 58, 35);
       background-color: beige;
+      min-width: 0;
+      min-height: 0;
+      object-fit: contain;
+
 
     }
     .square img {
-      height: 100%;
-      width: 100%;
+      min-width: 0;
+      min-height: 0;
       object-fit: contain;
     }
-    .player_1 {
-      color: #5a6db1;
+    
+  }
+
+  .join-buttons {
+    grid-area: join-buttons;
+  }
+  .green-button {
+    grid-area: return-button;
+  }
+
+  @media only screen and (orientation:portrait) and (max-width:450px){
+
+    h3 {
+      height: 5vh;
+      margin-top: 0.5em;
+      margin-bottom: 1em;
+      align-content: center;
     }
-    .player_2 {
-      color: #b37c34;
+
+    .page-organizer {
+      display: grid;
+      grid-template-areas: "join-buttons board"
+                            "return-button board";
+      grid-template-columns: 3fr 8fr;
+      grid-template-rows: 2fr 1fr;
     }
+
+    .board-wrapper {
+      grid-area: board;
+      width: 70vh;
+      height: 80vw;
+      margin: 0 auto;
+    }
+    .game-board {
+      
+      width: 100%;
+      height: 100%;
+      margin: 0em;
+      grid-template-columns: auto auto auto auto auto auto auto auto auto;;
+      grid-template-rows: auto auto auto auto auto;
+
+    }
+    .square {
+      border: 1px dashed rgb(153, 58, 35);
+      background-color: beige;
+      min-width: 0;
+      min-height: 0;
+      object-fit: contain;
+
+
+    }
+    .square img {
+      min-width: 0;
+      min-height: 0;
+      object-fit: contain;
+    }
+    
+  }
+
+  .join-buttons {
+    grid-area: join-buttons;
+  }
+  .green-button {
+    grid-area: return-button;
+  }
 </style>
