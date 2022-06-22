@@ -87,8 +87,8 @@ class GamesRepository:
         cursor.execute(sql, {"id": game_id})
         conn.commit()
 
-    def alternate_active_player(self, gameId):
-        game_state = self.get_game(gameId)
+    def alternate_active_player(self, game_id):
+        game_state = self.get_game(game_id)
 
         if game_state.active_player == "player_1":
             sql = """UPDATE games
@@ -101,5 +101,16 @@ class GamesRepository:
 
         conn = self.create_conn()
         cursor = conn.cursor()
-        cursor.execute(sql, {"id": gameId})
+        cursor.execute(sql, {"id": game_id})
+        conn.commit()
+
+    def finish_game(self, game_id):
+
+        sql = """DELETE FROM games
+                 WHERE id = :id"""
+
+        conn = self.create_conn()
+        cursor = conn.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.execute(sql, {"id": game_id})
         conn.commit()

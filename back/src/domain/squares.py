@@ -25,12 +25,13 @@ class SquaresRepository:
     def init_tables(self):
         sql = """
             CREATE TABLE IF NOT EXISTS squares (
-                id INTEGER PRIMARY KEY,
+                id INTEGER,
                 square VARCHAR,
                 soldier VARCHAR,
                 player VARCHAR,
                 game VARCHAR,
-                FOREIGN KEY (game) REFERENCES games(id)
+                FOREIGN KEY("game") REFERENCES "games"("id") ON DELETE CASCADE,
+                PRIMARY KEY("id")
 
             )
         """
@@ -59,7 +60,7 @@ class SquaresRepository:
                 square=item["square"], soldier=item["soldier"], player=item["player"]
             )
             result.append(square)
-
+        print(len(result))
         return result
 
     def get_content(self, square, game_id):
@@ -211,6 +212,21 @@ class SquaresRepository:
             return True
         else:
             return False
+
+    def winned_game(self, game_id):
+        conn = self.create_conn()
+        cursor = conn.cursor()
+
+        player_1_wins = """UPDATE squares SET soldier= null, player = null WHERE square = 'E6' AND game = :id"""
+        cursor.execute(player_1_wins, {"id": game_id})
+
+        conn.commit()
+
+    def has_winner(self, game_id):
+        squares = self.get_squares(game_id)
+
+        hq_list = [square.to_dict() for square in squares if square.soldier == "hq"]
+        return len(hq_list) < 2
 
 
 starting_state = """

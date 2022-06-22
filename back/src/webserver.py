@@ -62,6 +62,18 @@ def create_app(repositories):
             repositories["games"].exit_game(id, player_dict)
             return f"{body['player']} exit the game", 200
 
+    @app.route("/api/games/<id>", methods=["DELETE"])
+    def delete_game(id):
+        game = repositories["games"].get_game(id)
+        if game.player_1 == None and game.player_2 == None:
+            if repositories["squares"].has_winner(id):
+                repositories["games"].finish_game(id)
+                return "Game finished", 200
+            else:
+                return "Game not finished", 409
+        else:
+            return "Game not empty", 409
+
     @app.route("/api/games", methods=["POST"])
     def create_new_game():
         body = request.json
