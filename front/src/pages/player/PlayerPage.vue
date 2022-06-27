@@ -115,6 +115,13 @@ export default {
         return "alemán"
       } 
     },
+    hasWinner(){
+      if (this.winner !== ""){
+        return true
+      } else {
+        return false
+      }
+    }
       
   },
   methods: {
@@ -232,7 +239,11 @@ export default {
         return response
     },
     async finishGame(){
+      
       const response = await exitGame(this.player, this.gameId).then(async() => {
+          if (this.hasWinner()){
+            console.log("checkin to delete game")
+          }
           this.$router.push({name: "Home"})
         })
         return response
