@@ -21,8 +21,14 @@ export async function putGameMovement(movement, gameId) {
 
 export async function getGameState(gameId) {
   const response = await fetch(`${config.API_PATH}/games/${gameId}`);
-  const gameState = await response.json()
-  return gameState
+  if (response.status === 404){
+    const gameState = 404
+    return gameState
+  } else {
+    const gameState = await response.json()
+    return gameState
+  }
+  
 }
 
 export async function startNewGame(gameId){

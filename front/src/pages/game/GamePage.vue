@@ -25,6 +25,7 @@
     
 
     <WinnerModal v-show="modalOpened" :winner="winner" @finish="finishGame"/>
+    <GameNotFoundModal v-show="gameNotFound" @close="finishGame"/>
 
     
 
@@ -33,9 +34,10 @@
 <script>
 import {getGameSquares, getGameState, joinGame} from '@/services/api.js';
 import WinnerModal from '@/components/WinnerModal.vue';
+import GameNotFoundModal from './GameNotFoundModal.vue';
 
 export default {
-    components: {WinnerModal},
+    components: {WinnerModal, GameNotFoundModal},
     data() {
     return {
       activePlayer: "player_1",
@@ -46,6 +48,7 @@ export default {
       gameId: this.$route.params.gameId,
       player1 :null,
       player2 :null,
+      gameNotFound: false,
       
     };
   },
@@ -66,8 +69,12 @@ export default {
   methods: {
 
     async loadData() {
-      this.squares = await getGameSquares(this.gameId)
+      
       let gameState = await getGameState(this.gameId)
+      if (gameState === 404){
+        this.gameNotFound = true
+      }
+      this.squares = await getGameSquares(this.gameId)
       this.activePlayer = gameState.active_player
       this.player1 = gameState.player_1
       this.player2 = gameState.player_2
